@@ -10,9 +10,11 @@ interface Props {
   usePreciseValidation?: boolean;
   disabled?: boolean;
   inputProps?: InputHTMLAttributes;
+  value?: string | null;
+  modelValue?: string | null;
 }
 
-const props = withDefaults(defineProps<Props & { value?: string | null; modelValue?: string | null }>(), {
+const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   usePreciseValidation: false,
   inputProps: () => ({}),
@@ -101,8 +103,9 @@ watch(
     // Avoid cursor jumping when typing
     const next = val ?? "";
     const currentCanonical = instance.value.getNumber?.() ?? "";
+    const isFocused = document.activeElement === input.value;
 
-    if (currentCanonical === next) return;
+    if (isFocused || currentCanonical === next) return;
 
     instance.value.setNumber(next);
     updateValidity();
