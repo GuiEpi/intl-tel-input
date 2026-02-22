@@ -306,7 +306,7 @@ module.exports = function (grunt) {
   },
   {
     key: "validation_precise",
-    title: "Precise Validation (dangerous)",
+    title: "Precise validation (dangerous)",
     metaDesc:
       "Validate the user's phone number and if there's an error, display a relevant message.",
     content: {
@@ -322,7 +322,7 @@ module.exports = function (grunt) {
   },
   {
     key: "hidden_input",
-    title: "Hidden input option",
+    title: "Hidden input",
     metaDesc:
       "Automatically populate a hidden input with the full international number, so it gets submitted to your backend.",
     content: {

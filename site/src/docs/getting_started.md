@@ -1,4 +1,4 @@
-# Getting Started
+# Getting started
 
 ## Components
 
@@ -8,7 +8,7 @@ For the component docs, click one of the following links:
 - [Angular component docs](/docs/angular-component)
 - [Svelte component docs](/docs/svelte-component)
 
-## JavaScript Plugin
+## JavaScript plugin
 
 For the JavaScript plugin, you can choose from one of the three Getting Started options below
 - [Using a CDN](#using-a-cdn)
@@ -97,7 +97,7 @@ Most bundlers (such as Vite, Turbopack or Parcel) will see this and place the [u
   </script>
   ```
 
-## Recommended Usage
+## Recommended usage
 
 We highly recommend you [load the included utils.js](/docs/utils#loading-the-utilities-script), which enables formatting and validation, etc. Then the plugin is built to always deal with numbers in the full international format (e.g. "+17024181234") and convert them accordingly - even when [`nationalMode`](/docs/options#nationalmode) or [`separateDialCode`](/docs/options#separatedialcode) is enabled. We recommend you get, store, and set numbers exclusively in this format for simplicity - then you don't have to deal with handling the country code separately, as full international numbers include the country code information*.
 

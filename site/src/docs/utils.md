@@ -1,4 +1,4 @@
-# Utilities Script
+# Utilities script
 
 The utilities script (src/js/utils.js) is a custom build of Google's [libphonenumber](https://github.com/googlei18n/libphonenumber) which enables the following features:
 
@@ -9,7 +9,7 @@ The utilities script (src/js/utils.js) is a custom build of Google's [libphonenu
 
 International number formatting/validation is hard (it varies by country/district, and we currently support ~230 countries). The only comprehensive solution we have found is libphonenumber, from which we have precompiled the relevant parts into a single JavaScript file, included in the build directory. Unfortunately, even after modification, it is still ~260KB. See the section below on the best way to load it.
 
-## Loading The Utilities Script
+## Loading the utilities script
 
 The utils script provides lots of great functionality (see the above section), but comes at the cost of increased filesize (~260KB). There are two main ways to load the utils script, depending on whether you're concerned about filesize or not.
 

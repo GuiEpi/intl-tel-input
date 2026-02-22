@@ -1,15 +1,15 @@
-# Angular Component
+# Angular component
 
 An Angular component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/angular/src/intl-tel-input/angular.ts).
 
-## Table of Contents
+## Table of contents
 
 - [Demo](#demo)
-- [Getting Started](#getting-started)
+- [Getting started](#getting-started)
 - [Props](#props)
 - [Events](#events)
-- [Accessing Instance Methods](#accessing-instance-methods)
-- [Accessing Static Methods](#accessing-static-methods)
+- [Accessing instance methods](#accessing-instance-methods)
+- [Accessing static methods](#accessing-static-methods)
 
 ## Demo
 
@@ -38,7 +38,7 @@ python3 -m http.server
 > [!NOTE]
 > Make sure to serve from the project root, not from the demo folders.
 
-## Getting Started
+## Getting started
 
 First, install the package: 
 
@@ -141,11 +141,11 @@ Default: `null`
 
 A handler to be called when the number validity changes, e.g. to true/false. It will be passed the new isValid boolean.
 
-### Native Input Events
+### Native input events
 
-The component exposes several commonly used native DOM events that you can bind to using Angular's standard event binding syntax `(eventName)="handlerMethod($event)"`. For other native events not listed below, you can access the input element directly (see [Other Native Events](#other-native-events) section).
+The component exposes several commonly used native DOM events that you can bind to using Angular's standard event binding syntax `(eventName)="handlerMethod($event)"`. For other native events not listed below, you can access the input element directly (see [Other native events](#other-native-events) section).
 
-#### Supported Events
+#### Supported events
 
 The following native input events are directly supported:
 - `blur` - Fired when the input loses focus (receives `FocusEvent`)
@@ -165,7 +165,7 @@ Example usage:
 />
 ```
 
-#### Other Native Events
+#### Other native events
 
 For any other native DOM events not listed above, you can access the input element directly using a `ViewChild` reference and add event listeners manually:
 
@@ -189,13 +189,13 @@ export class MyComponent implements AfterViewInit, OnDestroy {
 }
 ```
 
-## Accessing Instance Methods
+## Accessing instance methods
 
 You can access all of the plugin's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc.) by using a ViewChild reference into the IntlTelInput component (using the `#ref` prop), and then calling `this.ref.getInstance()`, e.g. `this.ref.getInstance().setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/angular/demo/set-number/set-number.component.ts) for a full example. You can also access the input DOM element in a similar way: `this.ref.getInput()`.
 
 > [!IMPORTANT]
 > You must use `ngAfterViewInit` (not `ngOnInit` or `constructor`) to access instance or input methods, as the component needs to be fully initialised first.
 
-## Accessing Static Methods
+## Accessing static methods
 
 You can access all of the plugin's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the angular component, e.g. `import { intlTelInput } from "intl-tel-input/angular"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the main plugin, e.g. `intlTelInput.getCountryData()` or `intlTelInput.utils.numberType` etc.

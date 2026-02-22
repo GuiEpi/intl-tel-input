@@ -4,7 +4,7 @@ const docsDropdownPages = [
   { name: "methods", href: "/docs/methods", label: "Methods" },
   { name: "events", href: "/docs/events", label: "Events" },
   { name: "utils", href: "/docs/utils", label: "Utilities script" },
-  { name: "theming", href: "/docs/theming", label: "Theming / Dark mode" },
+  { name: "theming", href: "/docs/theming", label: "Theming / dark mode" },
   { name: "troubleshooting", href: "/docs/troubleshooting", label: "Troubleshooting" },
   { name: "react_component", href: "/docs/react-component", label: "React component" },
   { name: "vue_component", href: "/docs/vue-component", label: "Vue component" },

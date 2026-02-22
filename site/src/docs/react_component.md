@@ -1,23 +1,23 @@
-# React Component
+# React component
 
 A React component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/react/src/intl-tel-input/react.tsx).
 
-## Table of Contents
+## Table of contents
 
-- [Demo and Examples](#demo-and-examples)
-- [Getting Started](#getting-started)
+- [Demo](#demo)
+- [Getting started](#getting-started)
 - [Props](#props)
-- [Accessing Instance Methods](#accessing-instance-methods)
-- [Accessing Static Methods](#accessing-static-methods)
+- [Accessing instance methods](#accessing-instance-methods)
+- [Accessing static methods](#accessing-static-methods)
 - [Troubleshooting](#troubleshooting)
 
-## Demo and Examples
+## Demo
 
 You can see a live demo and example code on the [React component](/examples/react-component) example page.
 
 Alternatively, download and build the project yourself in 3 simple steps. You just need to initialise the submodules with `git submodule update --init --recursive`, then run `npm install`, and then `npm run build`. You should now be able to open the validation demo page /react/demo/validation/validation.html in your browser and give it a try. View other [available demos](https://github.com/jackocnr/intl-tel-input/tree/master/react/demo).
 
-## Getting Started
+## Getting started
 
 First, install the package: 
 
@@ -112,11 +112,11 @@ By default, we use `isValidNumber` for validation, but if you'd rather use `isVa
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
-## Accessing Instance Methods
+## Accessing instance methods
 
 You can access all of the plugin's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc) by passing a ref into the IntlTelInput component (using the `ref` prop), and then calling `ref.current.getInstance()`, e.g. `ref.current.getInstance().setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/react/demo/set-number/SetNumberApp.tsx) for a full example. You can also access the input DOM element in a similar way: `ref.current.getInput()`.
 
-## Accessing Static Methods
+## Accessing static methods
 
 You can access all of the plugin's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the React component, e.g. `import { intlTelInput } from "intl-tel-input/react"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the main plugin, e.g. `intlTelInput.getCountryData()` or `intlTelInput.utils.numberType` etc.
 

@@ -1,15 +1,15 @@
-# Vue Component
+# Vue component
 
 A Vue component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/vue/src/intl-tel-input/IntlTelInput.vue).
 
-## Table of Contents
+## Table of contents
 
 - [Demo](#demo)
-- [Getting Started](#getting-started)
+- [Getting started](#getting-started)
 - [Props](#props)
 - [Events](#events)
-- [Accessing Instance Methods](#accessing-instance-methods)
-- [Accessing Static Methods](#accessing-static-methods)
+- [Accessing instance methods](#accessing-instance-methods)
+- [Accessing static methods](#accessing-static-methods)
 
 ## Demo
 
@@ -17,7 +17,7 @@ You can see a live demo and example code on the [Vue component](/examples/vue-co
 
 Alternatively, download and build the project yourself in 3 simple steps. You just need to initialise the submodules with `git submodule update --init --recursive`, then run `npm install`, and then `npm run build`. You can then run `npm run vue:demo` and copy the given URL into your browser. By default, this is set up to show the validation demo - you can change this by locating the `"vue:demo"` task in the scripts section of package.json, and updating the demo path accordingly. View a list of [available demos](https://github.com/jackocnr/intl-tel-input/tree/master/vue/demo).
 
-## Getting Started
+## Getting started
 
 First, install the package: 
 
@@ -117,10 +117,10 @@ Default: `null`
 
 A handler to be called when the number validity changes, e.g. to true/false. It will be passed the new isValid boolean.
 
-## Accessing Instance Methods
+## Accessing instance methods
 
 You can access all of the plugin's [instance methods](/docs/methods#instance-methods) (`setNumber`, `setCountry`, `setPlaceholderNumberType`, etc.) by passing a ref into the IntlTelInput component (using the `ref` prop), and then accessing `ref.value.instance`, e.g. `ref.value?.instance?.setNumber(...);`. See the [Set Number demo](https://github.com/jackocnr/intl-tel-input/blob/master/vue/demo/set-number/App.vue) for a full example. You can also access the input DOM element in a similar way: `ref.value?.input`.
 
-## Accessing Static Methods
+## Accessing static methods
 
 You can access all of the plugin's [static methods](/docs/methods#static-methods) by importing `intlTelInput` from the same file as the Vue component, e.g. `import { intlTelInput } from "intl-tel-input/vue"` (note the lower case "i" in "intlTelInput"). You can then use this as you would with the main plugin, e.g. `intlTelInput.getCountryData()` or `intlTelInput.utils.numberType` etc.

@@ -1,19 +1,19 @@
-# Initialisation Options
+# Initialisation options
 
 When you initialise the plugin, the first argument is the input element, and the second is an object containing any initialisation options you want, which are detailed below. Note: any options that take country codes should be [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes.  
 
 ## Contents
 
-- [Country Options](#country-options)
-- [User Interface Options](#user-interface-options)
-- [Placeholder Options](#placeholder-options)
-- [Formatting Options](#formatting-options)
-- [Validation Options](#validation-options)
-- [Translation Options](#translation-options)
-- [Miscellaneous Options](#miscellaneous-options)
+- [Country options](#country-options)
+- [User interface options](#user-interface-options)
+- [Placeholder options](#placeholder-options)
+- [Formatting options](#formatting-options)
+- [Validation options](#validation-options)
+- [Translation options](#translation-options)
+- [Miscellaneous options](#miscellaneous-options)
 
 
-## Country Options
+## Country options
 
 Choose which countries are available, the order they're displayed in, and how the initial country is determined.
 
@@ -71,7 +71,7 @@ In the dropdown, display only the countries you specify here, using their iso2 c
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
-## User Interface Options
+## User interface options
 
 Control dropdown behaviour and whether certain UI elements are displayed.
 
@@ -135,7 +135,7 @@ Control when the country list appears as a fullscreen popup vs an inline dropdow
   <img width="350" height="637" alt="Separate dial code" src="/img/iti-mobile-light.png">
 </picture>
 
-## Placeholder Options
+## Placeholder options
 
 Configure the automatically generated placeholder numbers.
 
@@ -173,7 +173,7 @@ Specify [one of the keys](https://github.com/jackocnr/intl-tel-input/blob/master
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
-## Formatting Options
+## Formatting options
 
 How numbers are formatted as you type and on initial display.
 
@@ -201,7 +201,7 @@ Default: `false`
 
 As the user types in the input, ignore any irrelevant characters. The user can only enter numeric characters and an optional plus at the beginning. Cap the length at the maximum valid number length (this respects [`allowedNumberTypes`](#allowednumbertypes)). Requires the [utils script to be loaded](/docs/utils#loading-the-utilities-script). Try the plugin with this enabled (and initialCountry="us") in the [Playground](/playground?strictMode=true&initialCountry=us).
 
-## Validation Options
+## Validation options
 
 Adjust what is considered a valid number.
 
@@ -223,7 +223,7 @@ Default: `false`
 
 Whether or not the validation methods return `true` for numbers containing phonewords, e.g. "+1 702 FLOWERS". Play with this option in the [Playground](/playground).
 
-## Translation Options
+## Translation options
 
 Localise country names and the plugin UI strings, e.g. the country search placeholder.
 
@@ -294,7 +294,7 @@ intlTelInput(input, {
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
-## Miscellaneous Options
+## Miscellaneous options
 
 Extra features like hidden inputs and loading the utilities module.
 
