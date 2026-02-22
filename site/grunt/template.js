@@ -162,15 +162,20 @@ module.exports = function (grunt) {
     const jsSrc = js.src || `src/examples/js/${key}.js.ejs`;
     // some examples build to tmp first
     const jsDest = js.dest || `${js.destDir || "build"}/examples/js/${key}.js`;
-    const codePath = content.codePath || jsDest;
+    const displayCode = content.displayCode || jsDest;
     const scriptName = js.script || `${key}.js`;
 
     const contentDest = content.dest || `tmp/examples/${key}_content.html`;
     const layoutDest = content.layoutDest || `tmp/examples/${key}_layout.html`;
     const pageDest = content.pageDest || `build/examples/${slug}.html`;
 
-    const markupPath =
-      content.markupPath || `src/examples/html/${key}.html`;
+    // the HTML to actually use for the demo
+    const markupName = content.markupName || key;
+    const markupPath = `src/examples/html/${markupName}.html`;
+    // the (cleaner) HTML we want to display in the "Html" section
+    const displayMarkupCandidate = `src/examples/html/${markupName}_display_code.html`;
+    const displayMarkupPath = grunt.file.exists(displayMarkupCandidate) ? displayMarkupCandidate : markupPath;
+
 
     config[`${key}_js`] = makeTemplateTask(jsSrc, jsDest, () => ({ cacheBust }));
 
@@ -186,7 +191,8 @@ module.exports = function (grunt) {
         content_title: title,
         desc: grunt.file.read(`src/examples/copy/${key}_desc.html`),
         markup: grunt.file.read(markupPath),
-        code: grunt.file.read(codePath),
+        display_markup: grunt.file.read(displayMarkupPath),
+        display_code: grunt.file.read(displayCode),
         script: scriptName,
         ...(content.demo_note ? { demo_note: content.demo_note } : {}),
         ...(content.hideMarkupSection
@@ -245,7 +251,7 @@ module.exports = function (grunt) {
     title: "Lookup user's country",
     metaDesc: "Automatically set the country based on the user's IP address.",
     content: {
-      markupPath: "src/examples/html/simple_input.html",
+      markupName: "simple_input",
       includeItiScript: true,
     },
   },
@@ -258,8 +264,8 @@ module.exports = function (grunt) {
       script: "internationalisation_bundle.js",
     },
     content: {
-      markupPath: "src/examples/html/simple_input.html",
-      codePath: "src/examples/js/internationalisation_display_code.js",
+      markupName: "simple_input",
+      displayCode: "src/examples/js/internationalisation_display_code.js",
     },
   },
   {
@@ -271,9 +277,9 @@ module.exports = function (grunt) {
       script: "right_to_left_bundle.js",
     },
     content: {
-      markupPath: "src/examples/html/simple_input.html",
+      markupName: "simple_input",
       isRtl: true,
-      codePath: "src/examples/js/right_to_left_display_code.js",
+      displayCode: "src/examples/js/right_to_left_display_code.js",
     },
     layoutExtra: { isRtl: true },
   },
@@ -283,7 +289,7 @@ module.exports = function (grunt) {
     metaDesc: "When you only need to handle numbers from a single country.",
     content: {
       demo_note: "<p>Enter a US number:</p>",
-      markupPath: "src/examples/html/validation.html",
+      markupName: "validation",
       includeItiScript: true,
     },
     pageExtra: { stylesheet_after_demo_css: "/examples/css/validation.css" },
@@ -294,7 +300,7 @@ module.exports = function (grunt) {
     metaDesc:
       "Validate the user's phone number and if there's an error, display a relevant message.",
     content: {
-      markupPath: "src/examples/html/validation.html",
+      markupName: "validation",
       includeItiScript: true,
       extraData: () => ({
         demo_note: `<p>NOTE: by default, <code>isValidNumber</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>`,
@@ -310,7 +316,7 @@ module.exports = function (grunt) {
     metaDesc:
       "Validate the user's phone number and if there's an error, display a relevant message.",
     content: {
-      markupPath: "src/examples/html/validation.html",
+      markupName: "validation",
       includeItiScript: true,
       extraData: () => ({
         demo_note: `<p>NOTE: by default, <code>isValidNumberPrecise</code> only returns <code>true</code> for <i>mobile</i> and <i>fixed line</i> numbers. See <code>allowedNumberTypes</code> option for more information.</p>`,
@@ -359,7 +365,7 @@ module.exports = function (grunt) {
       src: "src/examples/js/simple_init_plugin.js.ejs",
     },
     content: {
-      markupPath: "src/examples/html/simple_input.html",
+      markupName: "simple_input",
       includeItiScript: true,
     },
     pageExtra: {
@@ -378,9 +384,9 @@ module.exports = function (grunt) {
       script: "angular_component_bundle.js",
     },
     content: {
-      markupPath: "src/examples/html/component.html",
+      markupName: "component",
       hideMarkupSection: true,
-      codePath: "src/examples/js/angular_component_display_code.ts",
+      displayCode: "src/examples/js/angular_component_display_code.ts",
       script: "angular_component_bundle.js",
     },
   },
@@ -393,9 +399,9 @@ module.exports = function (grunt) {
       script: "react_component_bundle.js",
     },
     content: {
-      markupPath: "src/examples/html/component.html",
+      markupName: "component",
       hideMarkupSection: true,
-      codePath: "src/examples/js/react_component_display_code.js",
+      displayCode: "src/examples/js/react_component_display_code.js",
       script: "react_component_bundle.js",
     },
   },
@@ -410,14 +416,13 @@ module.exports = function (grunt) {
       script: "vue_component_bundle.js",
     },
     content: {
-      markupPath: "src/examples/html/component.html",
+      markupName: "component",
       hideMarkupSection: true,
-      codePath: "src/examples/js/vue_component_display_code.vue",
+      displayCode: "src/examples/js/vue_component_display_code.vue",
       script: "vue_component_bundle.js",
     },
-  }];
-
-  exampleDefinitions.push({
+  },
+  {
     key: "svelte_component",
     title: "Svelte component",
     metaDesc: "How to use intl-tel-input with Svelte.",
@@ -428,12 +433,12 @@ module.exports = function (grunt) {
       script: "svelte_component_bundle.js",
     },
     content: {
-      markupPath: "src/examples/html/component.html",
+      markupName: "component",
       hideMarkupSection: true,
-      codePath: "src/examples/js/svelte_component_display_code.svelte",
+      displayCode: "src/examples/js/svelte_component_display_code.svelte",
       script: "svelte_component_bundle.js",
     },
-  });
+  }];
 
   exampleDefinitions.forEach((definition) => registerExample(definition));
 
