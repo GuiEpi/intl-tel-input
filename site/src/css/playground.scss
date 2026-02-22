@@ -3,6 +3,10 @@
 /**************
  * PLAYGROUND
  **************/
+// Make enable span behave like a label (default cursor)
+.form-check-enable-span {
+  cursor: default;
+}
 /* multidropdown toggle: disable hover styling when closed */
 .iti-playground-multidropdown-toggle {
   cursor: default;

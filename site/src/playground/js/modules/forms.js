@@ -1,4 +1,16 @@
 import { deepClone, parseJsonParam, safeStringify } from "./stateUtils.js";
+// Add a single event listener for all enable spans
+// Listener toggles the adjacent checkbox
+document.addEventListener("click", function (e) {
+  if (e.target.classList && e.target.classList.contains("form-check-enable-span")) {
+    const checkbox = e.target.previousElementSibling;
+    if (checkbox && checkbox.type === "checkbox") {
+      checkbox.checked = !checkbox.checked;
+      // Optionally trigger change event if needed
+      checkbox.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+  }
+});
 
 function initTooltips(container) {
   if (!container) return;
@@ -66,13 +78,13 @@ function buildBooleanExampleControl(key, meta, { idPrefix, dataAttr, exampleText
   checkbox.id = `${idPrefix}_${key}`;
   checkbox.setAttribute(dataAttr, key);
 
-  const enableLabel = document.createElement("label");
-  enableLabel.className = "form-check-label";
-  enableLabel.htmlFor = checkbox.id;
-  enableLabel.textContent = "Enable example code";
+  // this must be a span as we already have a label for this checkbox
+  const enableSpan = document.createElement("span");
+  enableSpan.className = "form-check-enable-span";
+  enableSpan.textContent = "Enable example code";
 
   checkboxRow.appendChild(checkbox);
-  checkboxRow.appendChild(enableLabel);
+  checkboxRow.appendChild(enableSpan);
 
   wrapper.appendChild(
     buildLabelGroup(meta, {
