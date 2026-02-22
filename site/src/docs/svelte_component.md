@@ -2,7 +2,7 @@
 
 A Svelte 5 component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/svelte/src/intl-tel-input/IntlTelInput.svelte).
 
-## Table of contents
+## Contents
 
 - [Demo](#demo)
 - [Getting started](#getting-started)

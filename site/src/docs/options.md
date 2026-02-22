@@ -1,6 +1,6 @@
 # Initialisation options
 
-When you initialise the plugin, the first argument is the input element, and the second is an object containing any initialisation options you want, which are detailed below. Note: any options that take country codes should be [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes.  
+When you initialise the plugin, the first argument is the input element, and the second is an object containing any initialisation options you want, which are detailed below. Country codes should always be [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes. Try out different options in the [Playground](/playground).
 
 ## Contents
 

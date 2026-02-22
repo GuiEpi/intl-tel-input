@@ -1,19 +1,12 @@
-# Getting started
+# Getting started with the JavaScript plugin
 
-## Components
+This page is for getting started with the JavaScript plugin. For the framework components (React, Vue, Angular and Svelte), see [Choosing your integration](/docs/choose-integration).
 
-For the component docs, click one of the following links:
-- [React component docs](/docs/react-component) 
-- [Vue component docs](/docs/vue-component)
-- [Angular component docs](/docs/angular-component)
-- [Svelte component docs](/docs/svelte-component)
-
-## JavaScript plugin
-
-For the JavaScript plugin, you can choose from one of the three Getting Started options below
+## Contents
 - [Using a CDN](#using-a-cdn)
 - [Using a bundler, e.g. Vite](#using-a-bundler-e-g-vite)
 - [Not using a bundler](#not-using-a-bundler)
+- [Recommended usage](#recommended-usage)
 
 ### Using a CDN
 

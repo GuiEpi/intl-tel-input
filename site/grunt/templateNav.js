@@ -1,4 +1,5 @@
 const docsDropdownPages = [
+  { name: "choose_integration", href: "/docs/choose-integration", label: "Choose integration" },
   { name: "getting_started", href: "/docs/getting-started", label: "Getting started" },
   { name: "options", href: "/docs/options", label: "Initialisation options" },
   { name: "methods", href: "/docs/methods", label: "Methods" },

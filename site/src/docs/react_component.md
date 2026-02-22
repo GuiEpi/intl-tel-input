@@ -2,7 +2,7 @@
 
 A React component for the intl-tel-input JavaScript plugin. View the [source code](https://github.com/jackocnr/intl-tel-input/blob/master/react/src/intl-tel-input/react.tsx).
 
-## Table of contents
+## Contents
 
 - [Demo](#demo)
 - [Getting started](#getting-started)
