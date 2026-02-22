@@ -328,11 +328,21 @@ function renderSupportedCountriesTable() {
   const countries = getSupportedCountries();
 
   const fragment = document.createDocumentFragment();
-  countries.forEach(({ name, iso2 }) => {
+  countries.forEach(({ name, iso2, dialCode }) => {
     const row = document.createElement("tr");
 
     const countryCell = document.createElement("td");
-    countryCell.textContent = name;
+    const flagDiv = document.createElement("div");
+    flagDiv.className = `iti__flag iti__${iso2} d-inline-block`;
+    const countryNameSpan = document.createElement("span");
+    countryNameSpan.className = "ms-2";
+    countryNameSpan.textContent = name;
+    const dialCodeSpan = document.createElement("span");
+    dialCodeSpan.className = "text-muted ms-2";
+    dialCodeSpan.textContent = `+${dialCode}`;
+    countryCell.appendChild(flagDiv);
+    countryCell.appendChild(countryNameSpan);
+    countryCell.appendChild(dialCodeSpan);
 
     const iso2Cell = document.createElement("td");
     iso2Cell.textContent = iso2;
