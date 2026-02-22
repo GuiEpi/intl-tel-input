@@ -7,6 +7,16 @@
 .form-check-enable-span {
   cursor: default;
 }
+// force these buttons to have the same colour as text-muted, which has a high enough contrast ratio to pass a11y guidelines.
+.playground-action-btn {
+  color: var(--bs-secondary-color) !important;
+}
+.playground-action-btn:hover {
+  background-color: #e3e1e1;
+  @media (prefers-color-scheme: dark) {
+    background-color: #363535;
+  }
+}
 /* multidropdown toggle: disable hover styling when closed */
 .iti-playground-multidropdown-toggle {
   cursor: default;
