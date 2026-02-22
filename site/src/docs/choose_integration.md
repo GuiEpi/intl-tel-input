@@ -23,7 +23,7 @@ We provide native wrappers for the four most popular frontend frameworks. These 
 Yes, but it is not recommended. You would need to manually handle `useEffect` or `onMounted` hooks to prevent memory leaks and ensure the plugin re-initialises correctly when the component updates. Our native components do this for you out of the box.
 
 **Do the components include all the plugin features?**  
-Yes. All [Initialisation Options](/docs/initialisation-options) and [Methods](/docs/methods) are available through the component props and refs.
+Yes. All [initialisation options](/docs/initialisation-options) and [methods](/docs/methods) are available through the component props and refs.
 
 **Which version is the most "up to date"?**  
 All versions are maintained simultaneously. When the core JavaScript logic is updated, those changes are immediately available to the React, Vue, Angular, and Svelte components.
