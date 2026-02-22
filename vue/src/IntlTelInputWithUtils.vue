@@ -118,7 +118,6 @@ defineExpose({ instance, input });
 <template>
   <input
     ref="input"
-    :value="displayed"
     type="tel"
     @countrychange="updateCountry"
     @input="updateValue"
