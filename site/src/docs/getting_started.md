@@ -45,27 +45,37 @@ For the JavaScript plugin, you can choose from one of the three Getting Started 
 
 ### Using a bundler, e.g. Vite
 
-1. Install with npm: `npm install intl-tel-input --save` or yarn: `yarn add intl-tel-input`
+1. Install with npm
 
-2. Import the CSS: `import 'intl-tel-input/styles';`
+```bash
+npm install intl-tel-input
+```
+
+2. Import the CSS
+
+```js
+import "intl-tel-input/styles";
+```
 
 3. Set the path to flags.webp in your CSS, by overriding the CSS variables
-  ```css
-  .iti {
-    --iti-path-flags-1x: url('path/to/flags.webp');
-    --iti-path-flags-2x: url('path/to/flags@2x.webp');
-  }
-  ```
+
+```css
+.iti {
+  --iti-path-flags-1x: url("path/to/flags.webp");
+  --iti-path-flags-2x: url("path/to/flags@2x.webp");
+}
+```
 
 4. Import the JS and initialise the plugin on your input element
-  ```js
-  import intlTelInput from 'intl-tel-input';
 
-  const input = document.querySelector("#phone");
-  intlTelInput(input, {
-    loadUtils: () => import("intl-tel-input/utils"),
-  });
-  ```
+```js
+import intlTelInput from "intl-tel-input";
+
+const input = document.querySelector("#phone");
+intlTelInput(input, {
+  loadUtils: () => import("intl-tel-input/utils"),
+});
+```
 
 Most bundlers (such as Vite, Turbopack or Parcel) will see this and place the [utilities script](/docs/utils) in a separate bundle and load it asynchronously, only when needed. If this doesn’t work with your bundler or you want to load the utils module from some other location (such as a CDN or your own hosted version), you can do that as well - see other examples.
 
@@ -92,7 +102,7 @@ Most bundlers (such as Vite, Turbopack or Parcel) will see this and place the [u
   <script>
     const input = document.querySelector("#phone");
     window.intlTelInput(input, {
-      loadUtils: () => import("https://my-domain/path/to/utils.js"),
+      loadUtils: () => import("https://your-domain.com/path/to/utils.js"),
     });
   </script>
   ```
