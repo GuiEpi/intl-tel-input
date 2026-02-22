@@ -22,13 +22,19 @@
   }
 
   // cute spinny logo animation on hover
-  .navbar-brand img {
-    margin-right: 10px;
-    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  @media (hover: hover) and (pointer: fine) {
+    .iti-logo {
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .navbar-brand:hover .iti-logo {
+      transform: rotate(360deg) scale(1.1);
+    }
   }
-  .navbar-brand:hover img {
-    transform: rotate(360deg) scale(1.1);
-  }
+}
+
+// both in header and mobile sidebar
+.iti-logo {
+  margin-right: 10px;
 }
 
 #bdNavbar {
