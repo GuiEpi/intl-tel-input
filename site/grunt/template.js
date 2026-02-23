@@ -443,7 +443,7 @@ module.exports = function (grunt) {
   exampleDefinitions.forEach((definition) => registerExample(definition));
 
   orderedDocsKeys.forEach((key) => {
-    const mdPath = path.join("src", "docs", `${key}.md`);
+    const mdPath = path.join("src", "docs", "markdown", `${key}.md`);
     const urlSlug = key.replace(/_/g, "-");
     const destPath = `build/docs/${urlSlug}.html`;
     const canonicalPath = `docs/${urlSlug}`;

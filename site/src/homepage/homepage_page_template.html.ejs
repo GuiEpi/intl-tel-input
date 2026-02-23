@@ -29,20 +29,7 @@
     <%= layout %>
     <%= common_body_end %>
     <%= iti_script %>
-    <script>
-      const input = document.querySelector("#phone");
-      window.intlTelInput(input, {
-        searchInputClass: "form-control",
-        initialCountry: "auto",
-        geoIpLookup: (success, failure) => {
-          fetch("https://ipapi.co/json")
-            .then(res => res.json())
-            .then(data => success(data.country_code))
-            .catch(() => failure());
-        },
-        loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
-      });
-    </script>
+    <script src="<%= cacheBust('/js/homepage.js') %>"></script>
     <%= iti_live_results_script %>
   </body>
 </html>
