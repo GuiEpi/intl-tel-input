@@ -1,61 +1,30 @@
-/* small shared utilities */
+// example page demos
 .demo input[type="tel"] {
   width: 250px;
 }
+// override bootstrap default placeholder color which is too high contrast for our design
 input::placeholder,
 .demo input::placeholder,
 input.form-control::placeholder,
 textarea.form-control::placeholder {
   color: #bbb;
+
+  @media (prefers-color-scheme: dark) {
+    color: #5a5a5a;
+  }
 }
-.actions {
-  margin-top: 20px;
-}
-.actions a {
-  margin-right: 10px;
-}
+// match bootstrap input border radius
 .iti__selected-country-primary {
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
+  border-top-left-radius: var(--bs-border-radius);
+  border-bottom-left-radius: var(--bs-border-radius);
 }
 
-/* form styling (for homepage AND example pages) */
-input:not([type="checkbox"]),
-.button,
-select,
-.form-select {
-  height: 38px;
-  margin: 0;
-  padding: 6px 12px;
-  border-radius: 3px;
-  color: inherit;
-}
-/* fix: the above padding breaks the ITI search input padding */
-input.iti__search-input {
-  padding-left: 30px;
-  padding-right: 28px;
-}
-select,
-.form-select {
-  padding-left: 8px; /* for some reason this is required to look consistent */
-}
-input,
-select,
-.form-select {
-  border: 1px solid #ccc;
-  width: 250px;
-}
-.button {
-  color: #fff;
-  background-color: #428bca;
-  border: 1px solid #357ebd;
-}
-.button:hover {
-  background-color: #3276b1;
-  border-color: #285e8e;
-  cursor: pointer;
-}
-.form-control,
-.form-select {
-  width: 100%;
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* plugin overrides */
+    --iti-border-color: #5b5b5b;
+    --iti-dropdown-bg: var(--bs-dark);
+    --iti-icon-color: var(--bs-body-color);
+    --iti-hover-color: #30363d;
+  }
 }
