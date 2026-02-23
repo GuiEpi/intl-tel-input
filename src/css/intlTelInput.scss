@@ -158,14 +158,16 @@
       background-position: right 8px center;
     }
 
-    & + .iti__country-list {
-      border-top: 1px solid var(--iti-border-color);
-    }
-
     // hide chrome/safari's native clear button for inputs with type=search
     &::-webkit-search-cancel-button {
       appearance: none;
     }
+  }
+  // give the search input the same v-padding as the country items, for visual consistency
+  &__search-input,
+  &__country {
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
   &__search-input-wrapper {
     position: relative;
@@ -261,7 +263,8 @@
     //* Note: decided not to use line-height here for alignment because it causes issues e.g. large font-sizes will overlap, and also looks bad if one country overflows onto 2 lines.
     display: flex;
     align-items: center;
-    padding: 8px var(--iti-spacer-horizontal);
+    padding-left: var(--iti-spacer-horizontal);
+    padding-right: var(--iti-spacer-horizontal);
     outline: none;
   }
 
@@ -362,8 +365,15 @@
     max-height: 100%;
     position: relative; //* Override needed in order to get full-width working properly.
   }
+  // give the search input the same v-padding as the country items, for visual consistency
+  .iti__country,
+  .iti__search-input {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
   .iti__country {
-    padding: 10px 10px;
+    padding-left: 10px;
+    padding-right: 10px;
     //* Increase line height because dropdown copy is v likely to overflow on mobile and when it does it needs to be well spaced.
     line-height: 1.5em;
   }
