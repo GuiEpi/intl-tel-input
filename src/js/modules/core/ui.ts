@@ -688,13 +688,14 @@ export default class UI {
     if (fixDropdownWidth) {
       this.dropdownContent.style.width = `${this.telInput.offsetWidth}px`;
     }
-    this.dropdownContent.classList.remove(CLASSES.HIDE);
-    this.selectedCountry.setAttribute(ARIA.EXPANDED, "true");
 
     // if using a separate dropdown container, we use a different positioning strategy
     if (dropdownContainer) {
       this._setPositionWithinContainer();
     }
+
+    this.dropdownContent.classList.remove(CLASSES.HIDE);
+    this.selectedCountry.setAttribute(ARIA.EXPANDED, "true");
 
     //* When countrySearch enabled, every time the dropdown is opened we reset by highlighting the first item and scrolling to top.
     if (countrySearch) {
