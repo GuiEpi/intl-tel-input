@@ -7,7 +7,7 @@
   --iti-flag-height: 18px;
   --iti-flag-width: 24px;
   --iti-globe-height: 16px;
-  --iti--search-clear-icon-height: 13px;
+  --iti-search-clear-icon-height: 13px;
   --iti-border-width: 1px;
   --iti-arrow-height: 4px;
   --iti-arrow-width: calc((var(--iti-arrow-height) / 2) * 3);
@@ -155,8 +155,8 @@
   fill: var(--iti-icon-color);
 }
 .iti__search-clear-svg {
-  width: var(--iti--search-clear-icon-height);
-  height: var(--iti--search-clear-icon-height);
+  width: var(--iti-search-clear-icon-height);
+  height: var(--iti-search-clear-icon-height);
   display: block;
 }
 [dir=rtl] .iti__search-clear {
@@ -203,8 +203,8 @@
   color: var(--iti-icon-color);
 }
 .iti__country-check-svg {
-  width: var(--iti--search-clear-icon-height);
-  height: var(--iti--search-clear-icon-height);
+  width: var(--iti-search-clear-icon-height);
+  height: var(--iti-search-clear-icon-height);
   display: block;
 }
 .iti__country-list .iti__flag {
