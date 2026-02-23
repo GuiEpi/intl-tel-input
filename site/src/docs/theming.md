@@ -7,7 +7,6 @@ Dark mode example (with screenshot below):
 @media (prefers-color-scheme: dark) {
   .iti {
     --iti-border-color: #5b5b5b;
-    --iti-dialcode-color: #999999;
     --iti-dropdown-bg: #0d1117;
     --iti-icon-color: #aaaaaa;
     --iti-hover-color: #30363d;

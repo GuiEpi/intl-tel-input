@@ -392,13 +392,15 @@ export default class UI {
       }
 
       const nameEl = createEl("span", { class: "iti__country-name" }, listItem);
-      nameEl.textContent = c.name;
+      nameEl.textContent = `${c.name} `;
 
+      // the dial code span sits inside the name span, separated by a space, which works for both LTR and RTL languages
+      // (visually it looks better separated by a standard space character, rather than a fixed margin distance, and is more flexible)
       const dialEl = createEl("span", { class: "iti__dial-code" }, nameEl);
       if (this.isRTL) {
         dialEl.setAttribute("dir", "ltr");
       }
-      dialEl.textContent = `+${c.dialCode}`;
+      dialEl.textContent = `(+${c.dialCode})`;
 
       frag.appendChild(listItem);
     }
