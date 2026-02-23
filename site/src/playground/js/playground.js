@@ -44,7 +44,12 @@ if (presetsSelect) {
 }
 
 function shouldDisableKeepDropdownOpen(state) {
-  return state.useFullscreenPopup || !state.allowDropdown;
+  return (
+    state.useFullscreenPopup ||
+    !state.allowDropdown ||
+    state.disabled ||
+    state.readOnly
+  );
 }
 
 function syncKeepDropdownOpenAvailability(state) {
