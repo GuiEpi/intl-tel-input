@@ -729,22 +729,16 @@ export default class UI {
     }
   }
 
-  // UI: Position the dropdown (DOM only). Does not bind scroll listeners.
+  // UI: Position the dropdown.
   setDropdownPosition(): void {
     const { dropdownContainer, useFullscreenPopup } = this.options;
 
-    if (dropdownContainer) {
+    if (dropdownContainer && this.dropdown) {
       dropdownContainer.appendChild(this.dropdown);
-    }
 
-    if (!useFullscreenPopup) {
-      // getBoundingClientRect is relative to the viewport, so when you scroll down, pos.top goes down, hence needing to add on scrollTop below
-      const inputPosRelativeToVP = this.telInput.getBoundingClientRect();
-      const inputHeight = this.telInput.offsetHeight;
-
-      //* If dropdownContainer is enabled, calculate postion.
-      if (dropdownContainer && this.dropdown) {
-        //* Calculate position.
+      if (!useFullscreenPopup) {
+        const inputPosRelativeToVP = this.telInput.getBoundingClientRect();
+        const inputHeight = this.telInput.offsetHeight;
         this.dropdown.style.top = `${inputPosRelativeToVP.top + inputHeight}px`;
         this.dropdown.style.left = `${inputPosRelativeToVP.left}px`;
       }
