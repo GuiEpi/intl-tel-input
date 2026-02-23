@@ -12,15 +12,15 @@
     <%= bootstrap_styles %>
 
     <!-- ITI styles - show largeFlags version on desktop -->
-    <link rel="stylesheet" href="<%= cacheBust('/intl-tel-input/css/intlTelInput.min.css') %>" media="screen and (max-width: 768px)">
-    <link rel="stylesheet" href="<%= cacheBust('/css/intlTelInput-largeFlags.css') %>" media="screen and (min-width: 769px)">
+    <link rel="stylesheet" href="<%= cacheBust('/intl-tel-input/css/intlTelInput.min.css') %>" media="screen and (max-width: 991px)">
+    <link rel="stylesheet" href="<%= cacheBust('/css/intlTelInput-largeFlags.css') %>" media="screen and (min-width: 992px)">
 
     <!-- website styles must come after ITI styles as contains dark mode overrides -->
     <link rel="stylesheet" href="<%= cacheBust('/css/website.css') %>" />
     <link rel="stylesheet" href="<%= cacheBust('/css/homepage.css') %>" />
 
     <!-- large flags overrides must come after website styles -->
-    <link rel="stylesheet" href="<%= cacheBust('/css/large_flags_overrides.css') %>" media="screen and (min-width: 769px)">
+    <link rel="stylesheet" href="<%= cacheBust('/css/large_flags_overrides.css') %>" media="screen and (min-width: 992px)">
 
     <%= common_head_end %>
   </head>
@@ -32,6 +32,7 @@
     <script>
       const input = document.querySelector("#phone");
       window.intlTelInput(input, {
+        searchInputClass: "form-control",
         initialCountry: "auto",
         geoIpLookup: (success, failure) => {
           fetch("https://ipapi.co/json")

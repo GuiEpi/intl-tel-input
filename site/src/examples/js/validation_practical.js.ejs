@@ -10,6 +10,7 @@ const errorMap = ["Invalid number", "Invalid country code", "Too short", "Too lo
 const iti = window.intlTelInput(input, {
   initialCountry: "us",
   loadUtils: () => import("<%= cacheBust('/intl-tel-input/js/utils.js') %>"),
+  searchInputClass: "form-control",
 });
 
 const reset = () => {

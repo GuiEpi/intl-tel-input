@@ -245,7 +245,7 @@ export default class UI {
   }
 
   private _buildSearchUI(): void {
-    const { i18n } = this.options;
+    const { i18n, searchInputClass } = this.options;
 
     // Wrapper so we can position the icons (search + clear)
     const searchWrapper = createEl(
@@ -271,7 +271,7 @@ export default class UI {
       {
         id: `iti-${this.id}__search-input`, // Chrome says inputs need either a name or an id
         type: "search",
-        class: "iti__search-input",
+        class: `iti__search-input ${searchInputClass}`,
         placeholder: i18n.searchPlaceholder,
         // role=combobox + aria-autocomplete=list + aria-activedescendant allows maintaining focus on the search input while allowing users to navigate search results with up/down keyboard keys
         role: "combobox",

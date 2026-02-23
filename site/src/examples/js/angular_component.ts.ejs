@@ -43,6 +43,7 @@ export class AppComponent {
   initOptions = {
     initialCountry: "us",
     loadUtils: () => import('<%= cacheBust('/intl-tel-input/js/utils.js') %>'),
+    searchInputClass: "form-control",
   };
 
   fg: FormGroup = new FormGroup({

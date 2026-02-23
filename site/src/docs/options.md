@@ -85,7 +85,7 @@ Whether or not to allow the dropdown. If disabled, there is no dropdown arrow, a
 Type: `String`  
 Default: `""`  
 
-Additional class(es) to add to the (injected) wrapper `<div class="iti">`.
+Additional class(es) to add to the (injected) wrapper div element `<div class="iti">`.
 
 ###### countrySearch
 Type: `Boolean`  
@@ -104,6 +104,12 @@ Type: `Boolean`
 Default: `true`  
 
 Fix the dropdown width to the input width (rather than being as wide as the longest country name). Try the plugin with this disabled in the [Playground](/playground?fixDropdownWidth=false).
+
+###### searchInputClass
+Type: `String`  
+Default: `""`  
+
+Additional class(es) to add to the country search input element (requires [`countrySearch`](#countrysearch) to be enabled).
 
 ###### separateDialCode
 Type: `Boolean`  

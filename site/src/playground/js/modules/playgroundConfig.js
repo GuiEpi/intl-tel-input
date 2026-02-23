@@ -38,6 +38,7 @@ export const OPTION_GROUPS = [
       "countrySearch",
       "dropdownContainer",
       "fixDropdownWidth",
+      "searchInputClass",
       "separateDialCode",
       "showFlags",
       "useFullscreenPopup",
@@ -95,6 +96,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     nationalMode: defaults.nationalMode,
     onlyCountries: defaults.onlyCountries,
     placeholderNumberType: defaults.placeholderNumberType,
+    searchInputClass: defaults.searchInputClass,
     separateDialCode: defaults.separateDialCode,
     showFlags: defaults.showFlags,
     strictMode: defaults.strictMode,
@@ -216,6 +218,10 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
       type: "select",
       tooltip: "Number type used when generating placeholders (e.g. MOBILE).",
       options: NUMBER_TYPES,
+    },
+    searchInputClass: {
+      type: "text",
+      tooltip: "Additional CSS class to add to the search input element.",
     },
     separateDialCode: {
       type: "boolean",

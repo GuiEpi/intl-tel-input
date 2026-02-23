@@ -48,7 +48,7 @@ build({
   outfile: "build/js/intlTelInput.js",
 });
 
-//* build/js/intlTelInput.min.js
+//* minified JS build (later becomes build/js/intlTelInput.min.js)
 build({
   ...shared,
   banner: {

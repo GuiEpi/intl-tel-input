@@ -36,7 +36,7 @@ export const defaults: AllOptions = {
   allowPhonewords: false,
   //* Add a placeholder in the input with an example number for the selected country.
   autoPlaceholder: PLACEHOLDER_MODES.POLITE,
-  //* Modify the parentClass.
+  //* Add a custom class to the (injected) container element.
   containerClass: "",
   //* Locale for localising country names via Intl.DisplayNames.
   countryNameLocale: "en",
@@ -74,10 +74,12 @@ export const defaults: AllOptions = {
   onlyCountries: [],
   //* Number type to use for placeholders.
   placeholderNumberType: "MOBILE",
-  //* Show flags - for both the selected country, and in the country dropdown
-  showFlags: true,
+  //* Add custom classes to the search input element.
+  searchInputClass: "",
   //* Display the international dial code next to the selected flag.
   separateDialCode: false,
+  //* Show flags - for both the selected country, and in the country dropdown
+  showFlags: true,
   //* Only allow certain chars e.g. a plus followed by numeric digits, and cap at max valid length.
   strictMode: false,
   //* Use full screen popup instead of dropdown for country list.
@@ -189,6 +191,7 @@ export const validateOptions = (customOptions: unknown): SomeOptions => {
         break;
 
       case "containerClass":
+      case "searchInputClass":
       case "countryNameLocale":
         if (typeof value !== "string") {
           warnOption(key, "a string", value);

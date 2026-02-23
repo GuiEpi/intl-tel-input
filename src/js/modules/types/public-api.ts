@@ -54,13 +54,14 @@ type ValueOf<T> = T[keyof T];
 // All configurable options
 export interface AllOptions {
   allowDropdown: boolean;
+  allowedNumberTypes: NumberType[] | null;
   allowNumberExtensions: boolean;
   allowPhonewords: boolean;
   autoPlaceholder: ValueOf<typeof PLACEHOLDER_MODES>;
   containerClass: string;
+  countryNameLocale: string;
   countryOrder: Iso2[] | null;
   countrySearch: boolean;
-  countryNameLocale: string;
   customPlaceholder:
     | ((
         selectedCountryPlaceholder: string,
@@ -85,11 +86,11 @@ export interface AllOptions {
   nationalMode: boolean;
   onlyCountries: Iso2[];
   placeholderNumberType: NumberType;
-  showFlags: boolean;
+  searchInputClass: string;
   separateDialCode: boolean;
+  showFlags: boolean;
   strictMode: boolean;
   useFullscreenPopup: boolean;
-  allowedNumberTypes: NumberType[] | null;
 }
 
 // Partial options accepted by the factory

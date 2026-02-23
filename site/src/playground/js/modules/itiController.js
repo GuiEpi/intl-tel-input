@@ -113,6 +113,8 @@ export class ItiPlaygroundController {
 
     this.destroy();
     initOptions.i18n = i18n;
+    // we need this bootstrap class, but don't want to bother users with this, so just add it here.
+    initOptions.searchInputClass += " form-control";
     this.iti = window.intlTelInput(this.telInput, initOptions);
 
     // Trigger live results box to update by triggering a countrychange event on the telInput

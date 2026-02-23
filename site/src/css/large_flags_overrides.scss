@@ -14,7 +14,8 @@
 .iti input {
   width: 350px !important;
 }
-.iti__tel-input {
+.iti__tel-input,
+.iti__search-input {
   font-size: inherit !important; // bootstrap override
 }
 .iti__search-icon {
