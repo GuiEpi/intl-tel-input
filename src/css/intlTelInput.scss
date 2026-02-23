@@ -171,6 +171,7 @@
     position: relative;
     display: flex;
     align-items: center;
+    border-bottom: 1px solid var(--iti-border-color);
   }
   &__search-icon {
     position: absolute;
