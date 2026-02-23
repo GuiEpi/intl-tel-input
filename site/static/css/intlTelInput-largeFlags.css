@@ -89,8 +89,7 @@
 .iti--inline-dropdown .iti__dropdown-content {
   position: absolute;
   z-index: 2;
-  margin-top: 3px;
-  margin-left: calc(var(--iti-border-width) * -1);
+  left: 0;
   border: var(--iti-border-width) solid var(--iti-border-color);
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
 }
@@ -106,9 +105,6 @@
   padding-right: 30px;
   background-position: right 8px center;
 }
-.iti__search-input + .iti__country-list {
-  border-top: 1px solid var(--iti-border-color);
-}
 .iti__search-input::-webkit-search-cancel-button {
   appearance: none;
 }
@@ -116,6 +112,7 @@
   position: relative;
   display: flex;
   align-items: center;
+  border-bottom: 1px solid var(--iti-border-color);
 }
 .iti__search-icon {
   position: absolute;

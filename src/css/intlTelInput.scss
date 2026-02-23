@@ -133,12 +133,7 @@
       position: absolute;
       //* Popup so render above everything else.
       z-index: 2;
-
-      //* Since (sometimes) adding a search input in the dropdown, better to make the dropdown look a bit more distinct from the tel input, to reduce confusion between the two inputs.
-      margin-top: 3px;
-
       left: 0;
-
       border: var(--iti-border-width) solid var(--iti-border-color);
       box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
     }
