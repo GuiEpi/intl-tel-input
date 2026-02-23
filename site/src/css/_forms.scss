@@ -28,3 +28,7 @@ textarea.form-control::placeholder {
     --iti-hover-color: #30363d;
   }
 }
+.iti__dropdown-content,
+.iti__search-input {
+  border-radius: var(--bs-border-radius);
+}
