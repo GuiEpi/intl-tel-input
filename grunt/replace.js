@@ -295,7 +295,7 @@ module.exports = function(grunt) {
 
     /**************
      * README file
-     * Update versions numbers in the Getting Started (CDN) section
+     * Update versions numbers
      **************/
     readme: {
       options: {
@@ -307,11 +307,6 @@ module.exports = function(grunt) {
         ]
       },
       files: {
-        'README.md': 'README.md',
-        'react/README.md': 'react/README.md',
-        'vue/README.md': 'vue/README.md',
-        'angular/README.md': 'angular/README.md',
-        'svelte/README.md': 'svelte/README.md',
         'site/src/docs/options.md': 'site/src/docs/options.md',
         'site/src/docs/getting_started.md': 'site/src/docs/getting_started.md',
       }
