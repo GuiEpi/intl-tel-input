@@ -678,7 +678,12 @@ export default class UI {
 
   // UI: Open the dropdown (DOM only).
   openDropdown(): void {
-    const { fixDropdownWidth, countrySearch, dropdownAlwaysOpen } = this.options;
+    const {
+      fixDropdownWidth,
+      countrySearch,
+      dropdownAlwaysOpen,
+      dropdownContainer,
+    } = this.options;
 
     if (fixDropdownWidth) {
       this.dropdownContent.style.width = `${this.telInput.offsetWidth}px`;
@@ -686,7 +691,10 @@ export default class UI {
     this.dropdownContent.classList.remove(CLASSES.HIDE);
     this.selectedCountry.setAttribute(ARIA.EXPANDED, "true");
 
-    this.setDropdownPosition();
+    // if using a separate dropdown container, we use a different positioning strategy
+    if (dropdownContainer) {
+      this._setPositionWithinContainer();
+    }
 
     //* When countrySearch enabled, every time the dropdown is opened we reset by highlighting the first item and scrolling to top.
     if (countrySearch) {
@@ -730,7 +738,7 @@ export default class UI {
   }
 
   // UI: Position the dropdown.
-  setDropdownPosition(): void {
+  _setPositionWithinContainer(): void {
     const { dropdownContainer, useFullscreenPopup } = this.options;
 
     if (dropdownContainer && this.dropdown) {
@@ -738,8 +746,7 @@ export default class UI {
 
       if (!useFullscreenPopup) {
         const inputPosRelativeToVP = this.telInput.getBoundingClientRect();
-        const inputHeight = this.telInput.offsetHeight;
-        this.dropdown.style.top = `${inputPosRelativeToVP.top + inputHeight}px`;
+        this.dropdown.style.top = `${inputPosRelativeToVP.bottom}px`;
         this.dropdown.style.left = `${inputPosRelativeToVP.left}px`;
       }
     }
