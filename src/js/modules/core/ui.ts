@@ -192,6 +192,20 @@ export default class UI {
     }
   }
 
+  private _maybeEnsureDropdownWidthSet(): void {
+    const { fixDropdownWidth } = this.options;
+
+    // Note: fixDropdownWidth is always false if useFullscreenPopup is true
+    // don't re-set it if it's already set
+    if (fixDropdownWidth && !this.dropdownContent.style.width) {
+      const inputWidth = this.telInput.offsetWidth;
+      // dont fix dropdown width if input width is zero (e.g. it's hidden during init)
+      if (inputWidth > 0) {
+        this.dropdownContent.style.width = `${inputWidth}px`;
+      }
+    }
+  }
+
   private _buildDropdownContent(): void {
     const {
       fixDropdownWidth,
@@ -233,13 +247,9 @@ export default class UI {
       this.updateSearchResultsA11yText();
     }
 
-    const inputWidth = this.telInput.offsetWidth;
-    // dont fix dropdown width if input width is zero (e.g. it's hidden during init)
-    if (fixDropdownWidth && inputWidth > 0) {
-      this.dropdownContent.style.width = `${inputWidth}px`;
-    }
     if (!useFullscreenPopup) {
       // inline dropdown
+      this._maybeEnsureDropdownWidthSet();
       // capture the dropdownHeight before injecting it into the DOM, using a clever invisible technique. This is used later to decide whether to show dropdown above/below input.
       this.inlineDropdownHeight = this.getHiddenInlineDropdownHeight();
       // fix the dropdown height when using countrySearch so when dropdown is positioned above input, and you type in the search input and the country list changes, the search input doesn't jump up/down.
@@ -726,6 +736,9 @@ export default class UI {
       dropdownAlwaysOpen,
       dropdownContainer,
     } = this.options;
+
+    // if fixDropdownWidth enabled, and the width was not set during init (e.g. because input was hidden), then set it now as the input must be visible now.
+    this._maybeEnsureDropdownWidthSet();
 
     // dropdownContainer is used (1) to show the inline dropdown when dropdownContainer option is set, and (2) to show the fullscreen popup on mobile
     if (dropdownContainer) {
