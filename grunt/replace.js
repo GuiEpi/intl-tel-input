@@ -307,8 +307,8 @@ module.exports = function(grunt) {
         ]
       },
       files: {
-        'site/src/docs/options.md': 'site/src/docs/options.md',
-        'site/src/docs/getting_started.md': 'site/src/docs/getting_started.md',
+        'site/src/docs/markdown/options.md': 'site/src/docs/markdown/options.md',
+        'site/src/docs/markdown/getting_started.md': 'site/src/docs/markdown/getting_started.md',
       }
     },
     issueTemplate: {
