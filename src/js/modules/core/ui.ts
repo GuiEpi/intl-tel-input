@@ -229,8 +229,10 @@ export default class UI {
       this.updateSearchResultsA11yText();
     }
 
-    if (fixDropdownWidth) {
-      this.dropdownContent.style.width = `${this.telInput.offsetWidth}px`;
+    const inputWidth = this.telInput.offsetWidth;
+    // dont fix dropdown width if input width is zero (e.g. it's hidden during init)
+    if (fixDropdownWidth && inputWidth > 0) {
+      this.dropdownContent.style.width = `${inputWidth}px`;
     }
     if (!useFullscreenPopup) {
       // inline dropdown

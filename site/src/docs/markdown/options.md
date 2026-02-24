@@ -103,7 +103,7 @@ Expects a node, e.g. `document.body`. Instead of putting the country dropdown ma
 Type: `Boolean`  
 Default: `true`  
 
-Fix the dropdown width to the input width (rather than being as wide as the longest country name). Try the plugin with this disabled in the [Playground](/playground?fixDropdownWidth=false).
+Fix the dropdown width to the input width (rather than being as wide as the longest country name). This requires the input to be visible during initialisation. Try the plugin with this disabled in the [Playground](/playground?fixDropdownWidth=false).
 
 ###### searchInputClass
 Type: `String`  
