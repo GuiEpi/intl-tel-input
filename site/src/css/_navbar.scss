@@ -40,6 +40,8 @@
 #bdNavbar {
   .nav-link {
     color: white;
+    // fix: unselected playground link not looking centered (to make space for bold active state)
+    text-align: center;
 
     /* Prevent nav items shifting when toggling font-weight by reserving space
        for the bold version of the label (used on the active state). */
