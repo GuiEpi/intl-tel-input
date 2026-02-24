@@ -48,7 +48,8 @@ function shouldDisableKeepDropdownOpen(state) {
     state.useFullscreenPopup ||
     !state.allowDropdown ||
     state.disabled ||
-    state.readOnly
+    state.readOnly ||
+    state.dropdownContainer // uses pos:fixed so can't be kept open on scroll
   );
 }
 
