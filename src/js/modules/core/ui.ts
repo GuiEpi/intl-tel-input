@@ -804,6 +804,10 @@ export default class UI {
   }
 
   _shouldPositionInlineDropdownBelowInput(): boolean {
+    // for testing, it's helpful for it to always be shown below.
+    if (this.options.dropdownAlwaysOpen) {
+      return true;
+    }
     const inputPos = this.telInput.getBoundingClientRect();
     const spaceAbove = inputPos.top;
     const spaceBelow = window.innerHeight - inputPos.bottom;
