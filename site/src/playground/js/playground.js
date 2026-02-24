@@ -341,13 +341,9 @@ function renderSupportedCountriesTable() {
     flagDiv.className = `iti__flag iti__${iso2} d-inline-block`;
     const countryNameSpan = document.createElement("span");
     countryNameSpan.className = "ms-2";
-    countryNameSpan.textContent = name;
-    const dialCodeSpan = document.createElement("span");
-    dialCodeSpan.className = "text-muted ms-2";
-    dialCodeSpan.textContent = `+${dialCode}`;
+    countryNameSpan.textContent = `${name} (+${dialCode})`;
     countryCell.appendChild(flagDiv);
     countryCell.appendChild(countryNameSpan);
-    countryCell.appendChild(dialCodeSpan);
 
     const iso2Cell = document.createElement("td");
     iso2Cell.textContent = iso2;
