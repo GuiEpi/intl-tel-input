@@ -61,7 +61,7 @@ const IntlTelInput = forwardRef(function IntlTelInput(
 
   const update = useCallback((): void => {
     // if the instance is not valid (e.g. has been destroyed/unmounted), do not attempt to call any methods on it
-    if (!itiRef.current?.getIsValid()) {
+    if (!itiRef.current?.isActive()) {
       return;
     }
     const num = itiRef.current?.getNumber() || "";

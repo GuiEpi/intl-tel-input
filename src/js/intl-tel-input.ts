@@ -1403,7 +1403,7 @@ export class Iti {
   }
 
   // check if the instance is still valid (not destroyed/unmounted)
-  getIsValid(): boolean {
+  isActive(): boolean {
     return !!this.ui?.telInput;
   }
 
