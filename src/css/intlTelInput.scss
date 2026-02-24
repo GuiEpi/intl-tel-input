@@ -326,8 +326,6 @@
     left: -1000px;
     //* Higher than default Bootstrap modal z-index of 1050.
     z-index: 1060;
-    //* To keep styling consistent with .country-container.
-    padding: var(--iti-border-width);
     &:hover {
       cursor: pointer;
     }
