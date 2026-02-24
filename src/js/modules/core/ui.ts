@@ -18,7 +18,7 @@ export default class UI {
   private readonly originalPaddingLeft: string;
   private countries: Country[];
   private searchKeyupTimer: ReturnType<typeof setTimeout> | null = null;
-  private dropdownHeight: number | null = null;
+  private inlineDropdownHeight: number | null = null;
 
   // public
   telInput: HTMLInputElement;
@@ -232,11 +232,14 @@ export default class UI {
     if (fixDropdownWidth) {
       this.dropdownContent.style.width = `${this.telInput.offsetWidth}px`;
     }
-    // capture the dropdownHeight before injecting it into the DOM, using a clever invisible technique. This is used later to decide whether to show dropdown above/below input.
-    this.dropdownHeight = this.getHiddenDropdownHeight();
-    // fix the dropdown height when using countrySearch so when dropdown is positioned above input, and you type in the search bar, and the country list changes, it doesn't jump around
-    if (countrySearch && !useFullscreenPopup) {
-      this.dropdownContent.style.height = `${this.dropdownHeight}px`;
+    if (!useFullscreenPopup) {
+      // inline dropdown
+      // capture the dropdownHeight before injecting it into the DOM, using a clever invisible technique. This is used later to decide whether to show dropdown above/below input.
+      this.inlineDropdownHeight = this.getHiddenInlineDropdownHeight();
+      // fix the dropdown height when using countrySearch so when dropdown is positioned above input, and you type in the search input and the country list changes, the search input doesn't jump up/down.
+      if (countrySearch) {
+        this.dropdownContent.style.height = `${this.inlineDropdownHeight}px`;
+      }
     }
 
     //* Create dropdownContainer markup.
@@ -479,7 +482,7 @@ export default class UI {
   }
 
   // this is run before we add the dropdown to the DOM
-  private getHiddenDropdownHeight(): number {
+  private getHiddenInlineDropdownHeight(): number {
     const body = UI.getBody();
     this.dropdownContent.classList.remove(CLASSES.HIDE);
 
@@ -718,11 +721,12 @@ export default class UI {
       dropdownContainer,
     } = this.options;
 
-    // dropdownContainer is used (1) to show the regular dropdown when there are certain layout constraints e.g. within a modal, and (2) to show the fullscreen popup on mobile
+    // dropdownContainer is used (1) to show the inline dropdown when dropdownContainer option is set, and (2) to show the fullscreen popup on mobile
     if (dropdownContainer) {
       this._handleDropdownContainer();
     } else {
-      const positionBelow = this._shouldPositionDropdownBelowInput();
+      // inline dropdown
+      const positionBelow = this._shouldPositionInlineDropdownBelowInput();
       const distance = this.telInput.offsetHeight + LAYOUT.DROPDOWN_MARGIN;
       if (positionBelow) {
         this.dropdownContent.style.top = `${distance}px`;
@@ -779,11 +783,11 @@ export default class UI {
     }
   }
 
-  _shouldPositionDropdownBelowInput(): boolean {
+  _shouldPositionInlineDropdownBelowInput(): boolean {
     const inputPos = this.telInput.getBoundingClientRect();
     const spaceAbove = inputPos.top;
     const spaceBelow = window.innerHeight - inputPos.bottom;
-    return spaceBelow >= this.dropdownHeight || spaceBelow >= spaceAbove;
+    return spaceBelow >= this.inlineDropdownHeight || spaceBelow >= spaceAbove;
   }
 
   // inject dropdown into container and apply positioning styles
@@ -794,14 +798,15 @@ export default class UI {
       dropdownContainer.appendChild(this.dropdownForContainer);
 
       if (!useFullscreenPopup) {
+        // inline dropdown
         // remember this inputPos is relative to the viewport, not the page
         const inputPos = this.telInput.getBoundingClientRect();
         this.dropdownForContainer.style.left = `${inputPos.left}px`;
-        const positionBelow = this._shouldPositionDropdownBelowInput();
+        const positionBelow = this._shouldPositionInlineDropdownBelowInput();
         if (positionBelow) {
           this.dropdownForContainer.style.top = `${inputPos.bottom + LAYOUT.DROPDOWN_MARGIN}px`;
         } else {
-          this.dropdownForContainer.style.top = `${inputPos.top - this.dropdownHeight - LAYOUT.DROPDOWN_MARGIN}px`;
+          this.dropdownForContainer.style.top = `${inputPos.top - this.inlineDropdownHeight - LAYOUT.DROPDOWN_MARGIN}px`;
         }
       }
     }
