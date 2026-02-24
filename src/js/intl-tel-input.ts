@@ -1496,7 +1496,7 @@ export class Iti {
   //* Shared internal validation logic to handle alpha character extension rules.
   private _validateNumber(precise: boolean): boolean | null {
     if (!intlTelInput.utils || !this.ui.telInput) {
-      return false;
+      return null;
     }
 
     const { allowNumberExtensions, allowPhonewords } = this.options;
