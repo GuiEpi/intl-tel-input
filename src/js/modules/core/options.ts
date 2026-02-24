@@ -1,4 +1,4 @@
-import { INITIAL_COUNTRY, PLACEHOLDER_MODES, NUMBER_TYPE_SET } from "../constants";
+import { INITIAL_COUNTRY, PLACEHOLDER_MODES, NUMBER_TYPE_SET, LAYOUT } from "../constants";
 import defaultEnglishStrings from "../../intl-tel-input/i18n/en";
 import allCountries, { type Iso2 } from "../../intl-tel-input/data";
 import type { AllOptions, SomeOptions } from "../types/public-api";
@@ -9,16 +9,16 @@ const mq = (q: string): boolean =>
   typeof window.matchMedia === "function" &&
   window.matchMedia(q).matches;
 
+const isNarrowViewport = () => mq(`(max-width: ${LAYOUT.NARROW_VIEWPORT_WIDTH}px)`);
+
 //* Helper to decide whether to use fullscreen popup by default
 const computeDefaultUseFullscreenPopup = (): boolean => {
   if (typeof navigator !== "undefined" && typeof window !== "undefined") {
-    const isNarrowViewport = mq("(max-width: 500px)");
     const isShortViewport = mq("(max-height: 600px)");
     const isCoarsePointer = mq("(pointer: coarse)");
-    /* Heuristic rationale: If narrow width OR (coarse pointer with constrained height) we  prefer fullscreen for usability. Coarse pointer usually implies touch (phones/tablets, some hybrids) where larger touch targets help (and virtual keyboards may be used, which consume more vertical space).
-    */
+    /* Heuristic rationale: If narrow width OR (coarse pointer with constrained height) we  prefer fullscreen for usability. Coarse pointer usually implies touch (phones/tablets, some hybrids) where larger touch targets help (and virtual keyboards may be used, which consume more vertical space). */
     return (
-      isNarrowViewport ||
+      isNarrowViewport() ||
       (isCoarsePointer && isShortViewport)
     );
   }
@@ -303,6 +303,11 @@ export const applyOptionSideEffects = (o: AllOptions): void => {
   //* If showing fullscreen popup, do not fix the width.
   if (o.useFullscreenPopup) {
     o.fixDropdownWidth = false;
+  } else {
+    // if fullscreen popup disabled for whatever reason, but it's still a narrow screen (so full width dropdown wont fit), then the best UX is to fix dropdown width to input width.
+    if (isNarrowViewport()) {
+      o.fixDropdownWidth = true;
+    }
   }
 
   //* If theres only one country, then use it!
