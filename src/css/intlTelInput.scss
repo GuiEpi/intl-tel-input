@@ -264,12 +264,16 @@
     padding-right: var(--iti-spacer-horizontal);
     outline: none;
   }
+  &__country-name {
+    // expand to fill available space, so the last flex item, the check mark, is pushed to the right edge
+    flex-grow: 1;
+  }
 
   //* Check icon shown on the right for the selected country.
   &__country-check {
     // align with clear icon which has padding:5px and right:4px, so is 9px from right edge
     // here, the parent list item has padding:8px, so add 1px to make it 9px from right edge
-    margin: 0 1px 0 auto;
+    margin: 0 1px 0 var(--iti-spacer-horizontal);
     display: flex;
     align-items: center;
     color: var(--iti-icon-color);
