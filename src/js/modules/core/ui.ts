@@ -93,8 +93,12 @@ export default class UI {
   }
 
   private _createWrapperAndInsert(): HTMLElement {
-    const { allowDropdown, showFlags, containerClass, useFullscreenPopup } =
-      this.options;
+    const {
+      allowDropdown,
+      showFlags,
+      containerClass,
+      useFullscreenPopup,
+    } = this.options;
 
     //* Containers (mostly for positioning).
     const parentClasses = buildClassNames({
@@ -499,7 +503,7 @@ export default class UI {
     tempContainer.style.visibility = "";
 
     this.dropdownContent.classList.add(CLASSES.HIDE);
-    return height;
+    return height > 0 ? height : LAYOUT.SANE_DROPDOWN_HEIGHT;
   }
 
   //* Update search results text (for a11y).
@@ -779,6 +783,7 @@ export default class UI {
     if (dropdownContainer) {
       this.dropdownForContainer.remove();
       this.dropdownForContainer.style.top = "";
+      this.dropdownForContainer.style.bottom = "";
     } else {
       this.dropdownContent.style.top = "";
       this.dropdownContent.style.bottom = "";
@@ -796,22 +801,26 @@ export default class UI {
   _handleDropdownContainer(): void {
     const { dropdownContainer, useFullscreenPopup } = this.options;
 
-    if (dropdownContainer) {
-      dropdownContainer.appendChild(this.dropdownForContainer);
+    if (!dropdownContainer) {
+      return;
+    }
 
-      if (!useFullscreenPopup) {
-        // inline dropdown
-        // remember this inputPos is relative to the viewport, not the page
-        const inputPos = this.telInput.getBoundingClientRect();
-        this.dropdownForContainer.style.left = `${inputPos.left}px`;
-        const positionBelow = this._shouldPositionInlineDropdownBelowInput();
-        if (positionBelow) {
-          this.dropdownForContainer.style.top = `${inputPos.bottom + LAYOUT.DROPDOWN_MARGIN}px`;
-        } else {
-          this.dropdownForContainer.style.top = `${inputPos.top - this.inlineDropdownHeight - LAYOUT.DROPDOWN_MARGIN}px`;
-        }
+    if (!useFullscreenPopup) {
+      // inline dropdown
+      // remember this inputPos is relative to the viewport, not the page
+      const inputPos = this.telInput.getBoundingClientRect();
+      this.dropdownForContainer.style.left = `${inputPos.left}px`;
+      const positionBelow = this._shouldPositionInlineDropdownBelowInput();
+      if (positionBelow) {
+        this.dropdownForContainer.style.top = `${inputPos.bottom + LAYOUT.DROPDOWN_MARGIN}px`;
+      } else {
+        // unset the default top:-1000px in the CSS
+        this.dropdownForContainer.style.top = "unset";
+        this.dropdownForContainer.style.bottom = `${window.innerHeight - inputPos.top + LAYOUT.DROPDOWN_MARGIN}px`;
       }
     }
+
+    dropdownContainer.appendChild(this.dropdownForContainer);
   }
 
   // UI: Whether the dropdown is currently closed (hidden).

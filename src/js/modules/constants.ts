@@ -58,6 +58,7 @@ export const LAYOUT = {
   SANE_SELECTED_NO_DIAL_WIDTH: 42, // px width fallback when no separate dial code
   INPUT_PADDING_EXTRA_LEFT: 6, // px gap between selected country container and input text
   DROPDOWN_MARGIN: 3, // px margin between dropdown and tel input
+  SANE_DROPDOWN_HEIGHT: 200, // px height fallback for dropdown
 } as const;
 
 // Helpful grouping for dial code logic (kept lean; expand only if reused widely)

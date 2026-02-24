@@ -130,12 +130,15 @@
     background-color: var(--iti-dropdown-bg);
 
     .iti--inline-dropdown & {
+      border: var(--iti-border-width) solid var(--iti-border-color);
+      box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+    }
+    // Note: dont apply these styles when using dropdownContainer, as that uses pos:fixed and so this (child) doesn't need pos:absolute
+    .iti--inline-dropdown:not(.iti--container) & {
       position: absolute;
       //* Popup so render above everything else.
       z-index: 2;
       left: 0;
-      border: var(--iti-border-width) solid var(--iti-border-color);
-      box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
     }
   }
   &__search-input {

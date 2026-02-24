@@ -44,7 +44,7 @@ module.exports = function(grunt) {
     },
     css: {
       files: "src/css/**/*",
-      tasks: "sass"
+      tasks: "build:css"
     }
   };
 };
