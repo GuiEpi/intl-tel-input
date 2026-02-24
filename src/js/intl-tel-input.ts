@@ -1175,9 +1175,9 @@ export class Iti {
   }
 
   //* Close the dropdown and unbind any listeners.
-  private _closeDropdown(): void {
+  private _closeDropdown(isDestroy?: boolean): void {
     // we call closeDropdown in places where it might not even be open e.g. in destroy()
-    if (this.ui.isDropdownClosed() || this.options.dropdownAlwaysOpen) {
+    if (this.ui.isDropdownClosed() || (this.options.dropdownAlwaysOpen && !isDestroy)) {
       return;
     }
 
@@ -1384,7 +1384,7 @@ export class Iti {
     }
     if (this.options.allowDropdown) {
       //* Make sure the dropdown is closed (and unbind listeners).
-      this._closeDropdown();
+      this._closeDropdown(true);
     }
 
     //* Abort all listeners registered via the main controller
