@@ -689,6 +689,7 @@ export default class UI {
   }
 
   destroy(): void {
+    // restore all instance refs to enable garbage collection
     this.telInput.iti = undefined;
     //* Remove attribute of id instance: data-intl-tel-input-id.
     delete this.telInput.dataset.intlTelInputId;
@@ -722,7 +723,7 @@ export default class UI {
     this.highlightedItem = null;
     this.selectedItem = null;
 
-    // also clear all references to the list items in the countries data
+    // also clear all references to the list items in the countries data (for garbage collection)
     for (const c of this.countries) {
       delete c.nodeById[this.id];
     }

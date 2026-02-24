@@ -1394,6 +1394,7 @@ export class Iti {
     //* Remove all added DOM elements and classes.
     this.ui.destroy();
 
+    //* Remove this instance from the global registry.
     if (intlTelInput.instances instanceof Map) {
       intlTelInput.instances.delete(this.id);
     } else {
@@ -1401,9 +1402,14 @@ export class Iti {
     }
   }
 
+  // check if the instance is still valid (not destroyed/unmounted)
+  getIsValid(): boolean {
+    return !!this.ui?.telInput;
+  }
+
   //* Get the extension from the current number.
   getExtension(): string {
-    if (intlTelInput.utils) {
+    if (intlTelInput.utils && this.ui.telInput) {
       return intlTelInput.utils.getExtension(
         this._getFullNumber(),
         this.selectedCountryData.iso2,
@@ -1414,7 +1420,7 @@ export class Iti {
 
   //* Format the number to the given format.
   getNumber(format?: number): string {
-    if (intlTelInput.utils) {
+    if (intlTelInput.utils && this.ui.telInput) {
       const { iso2 } = this.selectedCountryData;
       const fullNumber = this._getFullNumber();
       const formattedNumber = intlTelInput.utils.formatNumber(
@@ -1430,7 +1436,7 @@ export class Iti {
 
   //* Get the type of the entered number e.g. landline/mobile.
   getNumberType(): number {
-    if (intlTelInput.utils) {
+    if (intlTelInput.utils && this.ui.telInput) {
       return intlTelInput.utils.getNumberType(
         this._getFullNumber(),
         this.selectedCountryData.iso2,
@@ -1446,7 +1452,7 @@ export class Iti {
 
   //* Get the validation error.
   getValidationError(): number {
-    if (intlTelInput.utils) {
+    if (intlTelInput.utils && this.ui.telInput) {
       const { iso2 } = this.selectedCountryData;
       return intlTelInput.utils.getValidationError(this._getFullNumber(), iso2);
     }
@@ -1457,11 +1463,12 @@ export class Iti {
   isValidNumber(): boolean | null {
     // custom validation for UK mobile numbers - useful when allowedNumberTypes=["MOBILE", "FIXED_LINE"], where UK fixed_line numbers can be much shorter than mobile numbers
     const { dialCode, iso2 } = this.selectedCountryData;
-    if (dialCode === UK.DIAL_CODE && intlTelInput.utils) {
+    if (dialCode === UK.DIAL_CODE && intlTelInput.utils && this.ui.telInput) {
       const number = this._getFullNumber();
       const coreNumber = intlTelInput.utils.getCoreNumber(number, iso2);
       // UK mobile numbers (starting with a 7) must have a core number that is 10 digits long (excluding dial code/national prefix)
       if (
+        coreNumber &&
         coreNumber[0] === UK.MOBILE_PREFIX &&
         coreNumber.length !== UK.MOBILE_CORE_LENGTH
       ) {
@@ -1488,8 +1495,8 @@ export class Iti {
 
   //* Shared internal validation logic to handle alpha character extension rules.
   private _validateNumber(precise: boolean): boolean | null {
-    if (!intlTelInput.utils) {
-      return null;
+    if (!intlTelInput.utils || !this.ui.telInput) {
+      return false;
     }
 
     const { allowNumberExtensions, allowPhonewords } = this.options;
@@ -1540,6 +1547,9 @@ export class Iti {
 
   //* Update the selected country, and update the input val accordingly.
   setCountry(iso2: Iso2): void {
+    if (!this.ui.telInput) {
+      return;
+    }
     const iso2Lower = iso2?.toLowerCase() as Iso2;
     // handle invalid iso2
     if (!isIso2(iso2Lower)) {
@@ -1564,6 +1574,9 @@ export class Iti {
 
   //* Set the input value and update the country.
   setNumber(number: string): void {
+    if (!this.ui.telInput) {
+      return;
+    }
     const normalisedNumber = this.numerals.normalise(number);
     //* We must update the country first, which updates this.selectedCountryData, which is used for
     //* formatting the number before displaying it.
@@ -1578,11 +1591,17 @@ export class Iti {
 
   //* Set the placeholder number typ
   setPlaceholderNumberType(type: NumberType): void {
+    if (!this.ui.telInput) {
+      return;
+    }
     this.options.placeholderNumberType = type;
     this._updatePlaceholder();
   }
 
   setDisabled(disabled: boolean): void {
+    if (!this.ui.telInput) {
+      return;
+    }
     this.ui.telInput.disabled = disabled;
     if (disabled) {
       this.ui.selectedCountry.setAttribute("disabled", "true");

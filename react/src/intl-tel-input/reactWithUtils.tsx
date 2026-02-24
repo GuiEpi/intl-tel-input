@@ -61,6 +61,9 @@ const IntlTelInput = forwardRef(function IntlTelInput(
   }));
 
   const update = useCallback((): void => {
+    if (!itiRef.current?.getIsValid()) {
+      return;
+    }
     const num = itiRef.current?.getNumber() || "";
     const countryIso = itiRef.current?.getSelectedCountryData().iso2 || "";
     // note: this number will be in standard E164 format, but any container component can use

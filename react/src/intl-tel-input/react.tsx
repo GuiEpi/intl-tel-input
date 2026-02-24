@@ -60,6 +60,10 @@ const IntlTelInput = forwardRef(function IntlTelInput(
   }));
 
   const update = useCallback((): void => {
+    // if the instance is not valid (e.g. has been destroyed/unmounted), do not attempt to call any methods on it
+    if (!itiRef.current?.getIsValid()) {
+      return;
+    }
     const num = itiRef.current?.getNumber() || "";
     const countryIso = itiRef.current?.getSelectedCountryData().iso2 || "";
     // note: this number will be in standard E164 format, but any container component can use
