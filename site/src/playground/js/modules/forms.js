@@ -410,7 +410,16 @@ export function getStateFromForm(formEl, defaults, metaMap, dataAttr) {
     if (meta.type === "multidropdown") {
       const root = formEl.querySelector(`[data-multidropdown="${key}"]`);
       if (!root) return;
+
       const checked = [...root.querySelectorAll("input[type=\"checkbox\"]:checked")].map((el) => el.value);
+
+      // Keep ordering stable by always following the dropdown option order.
+      const optionOrder = meta && Array.isArray(meta.options) ? meta.options : [];
+      const indexByValue = new Map(optionOrder.map((v, i) => [v, i]));
+      checked.sort(
+        (a, b) => (indexByValue.get(a) ?? Number.MAX_SAFE_INTEGER) - (indexByValue.get(b) ?? Number.MAX_SAFE_INTEGER),
+      );
+
       state[key] = checked;
       return;
     }
@@ -455,7 +464,11 @@ export function setFormFromState(formEl, state, metaMap, dataAttr, { defaultStat
       });
 
       const button = root.querySelector("button[data-bs-toggle=\"dropdown\"]");
-      if (button) button.textContent = formatMultiDropdownSelection([...values]);
+      if (button) {
+        const optionOrder = meta && Array.isArray(meta.options) ? meta.options : [];
+        const ordered = optionOrder.filter((v) => values.has(v));
+        button.textContent = formatMultiDropdownSelection(ordered);
+      }
       return;
     }
 
