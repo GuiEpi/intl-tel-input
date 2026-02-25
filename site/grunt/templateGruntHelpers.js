@@ -12,6 +12,9 @@ const readCommonPagePartials = (grunt, data) => ({
   iti_styles: grunt.template.process(grunt.file.read("src/shared/iti_styles.html.ejs"), {
     data,
   }),
+  highlight_styles: grunt.template.process(grunt.file.read("src/shared/highlight_styles.html.ejs"), {
+    data,
+  }),
   common_head_end: data && data.isDevBuild
     ? ""
     : grunt.file.read("src/shared/common_head_end.html"),
