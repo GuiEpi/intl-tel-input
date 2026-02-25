@@ -24,6 +24,7 @@ const keepDropdownOpenCheckbox = document.querySelector("#playgroundKeepDropdown
 const optionsForm = document.querySelector("#playgroundOptions");
 const attrsForm = document.querySelector("#playgroundAttributes");
 const resetAllButton = document.querySelector("#playgroundResetAll");
+const shareButton = document.querySelector("#playgroundShareBtn");
 const resetAttrsButton = document.querySelector("#playgroundResetAttrs");
 const initCodeEl = document.querySelector("#playgroundInitCode");
 const copyInitCodeButton = document.querySelector("#playgroundCopyInitCode");
@@ -111,6 +112,33 @@ keepDropdownOpenCheckbox.addEventListener("change", () => {
 syncKeepDropdownOpen();
 
 bindCopyCodeButton(copyInitCodeButton, initCodeEl);
+
+if (shareButton) {
+  let copiedResetTimer = null;
+  const originalLabel = shareButton.textContent;
+
+  shareButton.addEventListener("click", () => {
+    const url = window.location.href;
+
+    if (!navigator.clipboard || !window.isSecureContext) return;
+    navigator.clipboard.writeText(url).then(
+      () => {
+        shareButton.textContent = "Copied URL!";
+        shareButton.disabled = true;
+
+        if (copiedResetTimer) window.clearTimeout(copiedResetTimer);
+        copiedResetTimer = window.setTimeout(() => {
+          shareButton.textContent = originalLabel;
+          shareButton.disabled = false;
+          copiedResetTimer = null;
+        }, 2000);
+      },
+      () => {
+        // Intentionally no UI feedback on failure.
+      },
+    );
+  });
+}
 
 const { defaults } = window.intlTelInput;
 const i18nOptionLabels = createI18nOptionLabels(I18N_LANGUAGE_CODES);
