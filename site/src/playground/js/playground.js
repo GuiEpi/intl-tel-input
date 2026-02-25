@@ -44,6 +44,21 @@ if (presetsSelect) {
   });
 }
 
+function flashActionButtonLabel(buttonEl, temporaryLabel) {
+  if (!buttonEl) return;
+
+  const labelEl = buttonEl.querySelector("[data-role=\"label\"]") || buttonEl;
+  const originalLabel = labelEl.textContent;
+
+  labelEl.textContent = temporaryLabel;
+  buttonEl.disabled = true;
+
+  window.setTimeout(() => {
+    labelEl.textContent = originalLabel;
+    buttonEl.disabled = false;
+  }, 2000);
+}
+
 function shouldDisableKeepDropdownOpen(state) {
   return (
     state.useFullscreenPopup ||
@@ -115,7 +130,8 @@ bindCopyCodeButton(copyInitCodeButton, initCodeEl);
 
 if (shareButton) {
   let copiedResetTimer = null;
-  const originalLabel = shareButton.textContent;
+  const labelEl = shareButton.querySelector("[data-role=\"label\"]") || shareButton;
+  const originalLabel = labelEl.textContent;
 
   shareButton.addEventListener("click", () => {
     const url = window.location.href;
@@ -123,12 +139,12 @@ if (shareButton) {
     if (!navigator.clipboard || !window.isSecureContext) return;
     navigator.clipboard.writeText(url).then(
       () => {
-        shareButton.textContent = "Copied URL!";
+        labelEl.textContent = "Copied URL!";
         shareButton.disabled = true;
 
         if (copiedResetTimer) window.clearTimeout(copiedResetTimer);
         copiedResetTimer = window.setTimeout(() => {
-          shareButton.textContent = originalLabel;
+          labelEl.textContent = originalLabel;
           shareButton.disabled = false;
           copiedResetTimer = null;
         }, 2000);
@@ -292,6 +308,7 @@ optionsForm.addEventListener("click", (event) => {
 
   event.preventDefault();
   resetOptionGroupToDefaults(groupKeys);
+  flashActionButtonLabel(btn, "Reset!");
 });
 
 function resetAllToDefaults() {
@@ -321,6 +338,7 @@ if (resetAllButton) {
   resetAllButton.addEventListener("click", (event) => {
     event.preventDefault();
     resetAllToDefaults();
+    flashActionButtonLabel(resetAllButton, "Reset!");
   });
 }
 
@@ -344,6 +362,8 @@ if (resetAttrsButton) {
       attributeQueryAliases,
       defaultState,
     });
+
+    flashActionButtonLabel(resetAttrsButton, "Reset!");
   });
 }
 

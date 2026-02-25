@@ -12,15 +12,16 @@ export function bindCopyCodeButton(buttonEl, codeEl) {
   if (!buttonEl || !codeEl) return;
 
   let copiedResetTimer = null;
+  const labelEl = buttonEl.querySelector('[data-role="label"]') || buttonEl;
 
   buttonEl.addEventListener("click", () => {
-    const originalLabel = buttonEl.textContent;
+    const originalLabel = labelEl.textContent;
     copyTextToClipboard(codeEl.textContent).then((ok) => {
       if (!ok) return;
-      buttonEl.textContent = "Copied!";
+      labelEl.textContent = "Copied code!";
       if (copiedResetTimer) window.clearTimeout(copiedResetTimer);
       copiedResetTimer = window.setTimeout(() => {
-        buttonEl.textContent = originalLabel;
+        labelEl.textContent = originalLabel;
         copiedResetTimer = null;
       }, 2000);
     });
