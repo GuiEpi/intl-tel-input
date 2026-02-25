@@ -19,9 +19,6 @@ module.exports = function (grunt) {
     readCommonBodyEndScript,
     readItiLiveResultsScript,
     readItiScript,
-    LAYOUT_TEMPLATE_PATH,
-    EXAMPLES_CONTENT_TEMPLATE_PATH,
-    EXAMPLES_PAGE_TEMPLATE_PATH,
   } = require("./templateGruntHelpers");
 
   // Helper: create a cache-bust template task for a built asset path
@@ -34,14 +31,16 @@ module.exports = function (grunt) {
   const {
     docsDropdownPages,
     examplesDropdownPages,
-    docsPageByName,
-    orderedDocsKeys,
   } = require("./templateNav");
 
   const md = createMarkdownRenderer();
 
-  const OG_SITE_NAME = "International Telephone Input";
-  const OG_IMAGE_URL = "https://intl-tel-input.com/img/favicon.png";
+  const homepageTitle = "International Telephone Input";
+  const homepageMetaDesc = "A JavaScript plugin for entering, formatting and validating international telephone numbers. Includes React, Vue, Angular and Svelte components.";
+  const homepageCanonicalUrl = "https://intl-tel-input.com";
+  const playgroundTitle = "Playground - International Telephone Input";
+  const playgroundMetaDesc = "Try different initialisation options and see the plugin update live.";
+  const playgroundCanonicalUrl = "https://intl-tel-input.com/playground";
 
   const config = {
     // cache bust common assets
@@ -60,7 +59,7 @@ module.exports = function (grunt) {
 
     // homepage
     homepage_layout: {
-      src: LAYOUT_TEMPLATE_PATH,
+      src: "src/layout_template.html.ejs",
       dest: "tmp/homepage/homepage_layout.html",
       options: {
         data: () => ({
@@ -79,15 +78,15 @@ module.exports = function (grunt) {
       dest: "build/index.html",
       options: {
         data: () => ({
+          homepageTitle,
+          homepageMetaDesc,
+          homepageCanonicalUrl,
           cacheBust,
           ...readCommonPagePartials(grunt, { cacheBust, isDevBuild }),
           og_meta_tags: buildOpenGraphMetaTags({
-            siteName: OG_SITE_NAME,
-            title: "International Telephone Input",
-            description:
-              "International Telephone Input - a JavaScript plugin for entering international telephone numbers.",
-            url: "https://intl-tel-input.com",
-            image: OG_IMAGE_URL,
+            title: homepageTitle,
+            description: homepageMetaDesc,
+            url: homepageCanonicalUrl,
           }),
           layout: grunt.file.read("tmp/homepage/homepage_layout.html"),
           common_body_end: readCommonBodyEndScript(grunt),
@@ -110,7 +109,7 @@ module.exports = function (grunt) {
       },
     },
     playground_layout: {
-      src: LAYOUT_TEMPLATE_PATH,
+      src: "src/layout_template.html.ejs",
       dest: "tmp/playground/playground_layout.html",
       options: {
         data: () => ({
@@ -129,15 +128,15 @@ module.exports = function (grunt) {
       dest: "build/playground.html",
       options: {
         data: () => ({
+          playgroundTitle,
+          playgroundMetaDesc,
+          playgroundCanonicalUrl,
           cacheBust,
           ...readCommonPagePartials(grunt, { cacheBust, isDevBuild }),
           og_meta_tags: buildOpenGraphMetaTags({
-            siteName: OG_SITE_NAME,
-            title: "Playground - International Telephone Input",
-            description:
-              "intl-tel-input playground - interactively tweak init options and see the plugin update live.",
-            url: "https://intl-tel-input.com/playground",
-            image: OG_IMAGE_URL,
+            title: playgroundTitle,
+            description: playgroundMetaDesc,
+            url: playgroundCanonicalUrl,
           }),
           layout: grunt.file.read("tmp/playground/playground_layout.html"),
           common_body_end: readCommonBodyEndScript(grunt),
@@ -176,6 +175,8 @@ module.exports = function (grunt) {
     const displayMarkupCandidate = `src/examples/html/${markupName}_display_code.html`;
     const displayMarkupPath = grunt.file.exists(displayMarkupCandidate) ? displayMarkupCandidate : markupPath;
 
+    const fullTitle = `${title} example - International Telephone Input`;
+    const canonicalUrl = `https://intl-tel-input.com/examples/${slug}`;
 
     config[`${key}_js`] = makeTemplateTask(jsSrc, jsDest, () => ({ cacheBust }));
 
@@ -184,7 +185,7 @@ module.exports = function (grunt) {
     });
 
     config[`${key}_content`] = makeTemplateTask(
-      EXAMPLES_CONTENT_TEMPLATE_PATH,
+      "src/examples/examples_content_template.html.ejs",
       contentDest,
       () => ({
         cacheBust,
@@ -224,19 +225,17 @@ module.exports = function (grunt) {
     });
 
     config[`${key}_page`] = makeTemplateTask(
-      EXAMPLES_PAGE_TEMPLATE_PATH,
+      "src/examples/examples_page_template.html.ejs",
       pageDest,
       () => ({
         cacheBust,
-        head_title: title,
-        canonical_path: `examples/${slug}`,
+        head_title: fullTitle,
+        canonical_url: canonicalUrl,
         meta_desc: metaDesc,
         og_meta_tags: buildOpenGraphMetaTags({
-          siteName: OG_SITE_NAME,
-          title: `${title} example - International Telephone Input`,
-          description: `An example use of International Telephone Input. ${metaDesc}`,
-          url: `https://intl-tel-input.com/examples/${slug}`,
-          image: OG_IMAGE_URL,
+          title: fullTitle,
+          description: metaDesc,
+          url: canonicalUrl,
         }),
         ...readCommonPagePartials(grunt, { cacheBust, isDevBuild }),
         content: grunt.file.read(layoutDest),
@@ -245,8 +244,57 @@ module.exports = function (grunt) {
     );
   };
 
-  const exampleDefinitions = [
-  {
+  const docsDefinitions = [{
+    key: "choose_integration",
+    title: "Choose integration",
+    metaDesc: "Which integration of intl-tel-input is right for you? Pure JavaScript, React, Vue, Angular or Svelte component?",
+  }, {
+    key: "getting_started",
+    title: "Getting started",
+    metaDesc: "How to quickly get up and running with intl-tel-input.",
+  }, {
+    key: "options",
+    title: "Initialisation options",
+    metaDesc: "All the different options you can use when initialising intl-tel-input.",
+  }, {
+    key: "methods",
+    title: "Methods",
+    metaDesc: "All the different methods you can call on an intl-tel-input instance.",
+  }, {
+    key: "events",
+    title: "Events",
+    metaDesc: "All the different events that an intl-tel-input instance can emit.",
+  }, {
+    key: "utils",
+    title: "Utilities script",
+    metaDesc: "Learn about the utils script, what it's for and how to load it.",
+  }, {
+    key: "theming",
+    title: "Theming / dark mode",
+    metaDesc: "How to theme the plugin, including how to set it up for dark mode.",
+  }, {
+    key: "troubleshooting",
+    title: "Troubleshooting",
+    metaDesc: "Solutions to common problems and FAQs about intl-tel-input.",
+  }, {
+    key: "react_component",
+    title: "React component",
+    metaDesc: "How to use the intl-tel-input React component.",
+  }, {
+    key: "vue_component",
+    title: "Vue component",
+    metaDesc: "How to use the intl-tel-input Vue component.",
+  }, {
+    key: "angular_component",
+    title: "Angular component",
+    metaDesc: "How to use the intl-tel-input Angular component.",
+  }, {
+    key: "svelte_component",
+    title: "Svelte component",
+    metaDesc: "How to use the intl-tel-input Svelte component.",
+  }];
+
+  const exampleDefinitions = [{
     key: "lookup_country",
     title: "Lookup user's country",
     metaDesc: "Automatically set the country based on the user's IP address.",
@@ -254,8 +302,7 @@ module.exports = function (grunt) {
       markupName: "simple_input",
       includeItiScript: true,
     },
-  },
-  {
+  }, {
     key: "internationalisation",
     title: "Internationalisation",
     metaDesc: "Support the internationalisation of country names via the i18n option.",
@@ -267,8 +314,7 @@ module.exports = function (grunt) {
       markupName: "simple_input",
       displayCode: "src/examples/js/internationalisation_display_code.js",
     },
-  },
-  {
+  }, {
     key: "right_to_left",
     title: "Right to left",
     metaDesc: "Support for right-to-left languages.",
@@ -282,8 +328,7 @@ module.exports = function (grunt) {
       displayCode: "src/examples/js/right_to_left_display_code.js",
     },
     layoutExtra: { isRtl: true },
-  },
-  {
+  }, {
     key: "single_country",
     title: "Single country",
     metaDesc: "When you only need to handle numbers from a single country.",
@@ -293,8 +338,7 @@ module.exports = function (grunt) {
       includeItiScript: true,
     },
     pageExtra: { stylesheet_after_demo_css: "/examples/css/validation.css" },
-  },
-  {
+  }, {
     key: "validation_practical",
     title: "Validation",
     metaDesc:
@@ -309,12 +353,11 @@ module.exports = function (grunt) {
     pageExtra: {
       stylesheet_after_demo_css: "/examples/css/validation.css",
     },
-  },
-  {
+  }, {
     key: "validation_precise",
     title: "Precise validation (dangerous)",
     metaDesc:
-      "Validate the user's phone number and if there's an error, display a relevant message.",
+      "Validate the user's phone number using the more precise method, and if there's an error, display a relevant message.",
     content: {
       markupName: "validation",
       includeItiScript: true,
@@ -325,8 +368,7 @@ module.exports = function (grunt) {
     pageExtra: {
       stylesheet_after_demo_css: "/examples/css/validation.css",
     },
-  },
-  {
+  }, {
     key: "hidden_input",
     title: "Hidden input",
     metaDesc:
@@ -334,30 +376,27 @@ module.exports = function (grunt) {
     content: {
       includeItiScript: true,
     },
-  },
-  {
+  }, {
     key: "multiple_instances",
     title: "Multiple instances",
-    metaDesc: "Use multiple instances of the plugin on the same page.",
+    metaDesc: "Use multiple instances of the plugin with different configurations on the same page.",
     content: {
       includeItiScript: true,
     },
     pageExtra: {
       stylesheet_after_demo_css: "/examples/css/multiple_instances.css",
     },
-  },
-  {
+  }, {
     key: "display_number",
     title: "Display existing number",
-    metaDesc: "Automatically format an existing number.",
+    metaDesc: "Automatically format an existing number during initialisation.",
     js: {
       src: "src/examples/js/simple_init_plugin.js.ejs",
     },
     content: {
       includeItiScript: true,
     },
-  },
-  {
+  }, {
     key: "large_flags",
     title: "Large flags",
     metaDesc: "How to display extra large flag images.",
@@ -373,8 +412,7 @@ module.exports = function (grunt) {
       stylesheet_after_demo_css: "/css/large_flags_overrides.css",
       omit_iti_styles: true, // as using special large styles instead
     },
-  },
-  {
+  }, {
     key: "angular_component",
     title: "Angular component",
     metaDesc: "How to use intl-tel-input with Angular.",
@@ -389,8 +427,7 @@ module.exports = function (grunt) {
       displayCode: "src/examples/js/angular_component_display_code.ts",
       script: "angular_component_bundle.js",
     },
-  },
-  {
+  }, {
     key: "react_component",
     title: "React component",
     metaDesc: "How to use intl-tel-input with React.",
@@ -404,8 +441,7 @@ module.exports = function (grunt) {
       displayCode: "src/examples/js/react_component_display_code.js",
       script: "react_component_bundle.js",
     },
-  },
-  {
+  }, {
     key: "vue_component",
     title: "Vue component",
     metaDesc: "How to use intl-tel-input with Vue.",
@@ -421,8 +457,7 @@ module.exports = function (grunt) {
       displayCode: "src/examples/js/vue_component_display_code.vue",
       script: "vue_component_bundle.js",
     },
-  },
-  {
+  }, {
     key: "svelte_component",
     title: "Svelte component",
     metaDesc: "How to use intl-tel-input with Svelte.",
@@ -442,12 +477,12 @@ module.exports = function (grunt) {
 
   exampleDefinitions.forEach((definition) => registerExample(definition));
 
-  orderedDocsKeys.forEach((key) => {
+  docsDefinitions.forEach(({ key, title, metaDesc }) => {
     const mdPath = path.join("src", "docs", "markdown", `${key}.md`);
     const urlSlug = key.replace(/_/g, "-");
     const destPath = `build/docs/${urlSlug}.html`;
-    const canonicalPath = `docs/${urlSlug}`;
-    const headTitle = (docsPageByName[key] && docsPageByName[key].label) || key;
+    const canonicalUrl = `https://intl-tel-input.com/docs/${urlSlug}`;
+    const fullTitle = `${title} docs - International Telephone Input`;
 
     config[`docs_content_${key}`] = {
       src: "src/docs/docs_content_template.html.ejs",
@@ -460,7 +495,7 @@ module.exports = function (grunt) {
     };
 
     config[`docs_layout_${key}`] = {
-      src: LAYOUT_TEMPLATE_PATH,
+      src: "src/layout_template.html.ejs",
       dest: `tmp/docs/${key}_layout.html`,
       options: {
         data: () => ({
@@ -483,15 +518,13 @@ module.exports = function (grunt) {
       options: {
         data: () => ({
           cacheBust,
-          head_title: headTitle,
-          canonical_path: canonicalPath,
-          meta_desc: `intl-tel-input documentation: ${headTitle}.`,
+          head_title: fullTitle,
+          canonical_url: canonicalUrl,
+          meta_desc: metaDesc,
           og_meta_tags: buildOpenGraphMetaTags({
-            siteName: OG_SITE_NAME,
-            title: `${headTitle} - International Telephone Input`,
-            description: `intl-tel-input documentation: ${headTitle}.`,
-            url: `https://intl-tel-input.com/${canonicalPath}`,
-            image: OG_IMAGE_URL,
+            title: fullTitle,
+            description: metaDesc,
+            url: canonicalUrl,
           }),
           ...readCommonPagePartials(grunt, { cacheBust, isDevBuild }),
           layout: grunt.file.read(`tmp/docs/${key}_layout.html`),

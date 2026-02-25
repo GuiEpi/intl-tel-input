@@ -1,7 +1,3 @@
-const LAYOUT_TEMPLATE_PATH = "src/layout_template.html.ejs";
-const EXAMPLES_CONTENT_TEMPLATE_PATH = "src/examples/examples_content_template.html.ejs";
-const EXAMPLES_PAGE_TEMPLATE_PATH = "src/examples/examples_page_template.html.ejs";
-
 const makeTemplateTask = (src, dest, data) => ({
   src,
   dest,
@@ -45,7 +41,7 @@ const makeLayoutTask = (
     extra = {},
   }
 ) =>
-  makeTemplateTask(LAYOUT_TEMPLATE_PATH, dest, () => ({
+  makeTemplateTask("src/layout_template.html.ejs", dest, () => ({
     showLeftSidebar,
     layoutClass,
     ...(navPath ? { nav: grunt.file.read(navPath) } : {}),
@@ -58,9 +54,6 @@ const makeLayoutTask = (
   }));
 
 module.exports = {
-  LAYOUT_TEMPLATE_PATH,
-  EXAMPLES_CONTENT_TEMPLATE_PATH,
-  EXAMPLES_PAGE_TEMPLATE_PATH,
   makeTemplateTask,
   makeLayoutTask,
   readCommonPagePartials,

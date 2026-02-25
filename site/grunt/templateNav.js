@@ -30,16 +30,7 @@ const examplesDropdownPages = [
   { name: "svelte_component", href: "/examples/svelte-component", label: "Svelte component" },
 ];
 
-const docsPageByName = docsDropdownPages.reduce((acc, p) => {
-  acc[p.name] = p;
-  return acc;
-}, {});
-
-const orderedDocsKeys = docsDropdownPages.map((p) => p.name);
-
 module.exports = {
   docsDropdownPages,
   examplesDropdownPages,
-  docsPageByName,
-  orderedDocsKeys,
 };

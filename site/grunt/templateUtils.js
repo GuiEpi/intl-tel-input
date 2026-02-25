@@ -243,24 +243,20 @@ const escapeHtmlAttr = (value) =>
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
-    .replace(/\"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+    .replace(/\"/g, "&quot;");
 
 const buildOpenGraphMetaTags = ({
-  siteName,
-  type = "website",
   title,
   description,
   url,
-  image,
 }) => {
   return [
-    `<meta property="og:site_name" content="${escapeHtmlAttr(siteName)}" />`,
-    `<meta property="og:type" content="${escapeHtmlAttr(type)}" />`,
+    `<meta property="og:site_name" content="International Telephone Input" />`,
+    `<meta property="og:type" content="website" />`,
     `<meta property="og:title" content="${escapeHtmlAttr(title)}" />`,
     `<meta property="og:description" content="${escapeHtmlAttr(description)}" />`,
     `<meta property="og:url" content="${escapeHtmlAttr(url)}" />`,
-    `<meta property="og:image" content="${escapeHtmlAttr(image)}" />`,
+    `<meta property="og:image" content="https://intl-tel-input.com/img/logo-green.png" />`,
   ].join("\n");
 };
 
