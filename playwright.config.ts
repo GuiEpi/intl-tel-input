@@ -26,10 +26,26 @@ export default defineConfig({
       },
     },
   ],
-  webServer: {
-    command: "./node_modules/.bin/http-server -p 4173 -c-1 .",
-    url: "http://localhost:4173/tests-e2e/fixtures/vanilla.html",
-    reuseExistingServer: true,
-    timeout: 120_000,
-  },
+  webServer: [
+    {
+      command: "./node_modules/.bin/http-server -p 4173 -c-1 .",
+      url: "http://localhost:4173/tests-e2e/fixtures/vanilla.html",
+      reuseExistingServer: true,
+      timeout: 120_000,
+    },
+    {
+      command:
+        "./node_modules/.bin/vite --config vue/demo/simple/vite.config.js --port 4174 --strictPort",
+      url: "http://localhost:4174/",
+      reuseExistingServer: true,
+      timeout: 120_000,
+    },
+    {
+      command:
+        "./node_modules/.bin/vite --config svelte/demo/simple/vite.config.mjs --port 4175 --strictPort",
+      url: "http://localhost:4175/",
+      reuseExistingServer: true,
+      timeout: 120_000,
+    },
+  ],
 });
