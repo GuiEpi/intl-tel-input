@@ -42,12 +42,6 @@ module.exports = function (grunt) {
       dest: "build", // destination folder
       expand: true, // required when using cwd
     },
-    js: {
-      cwd: "src/js", // set working folder / root to copy
-      src: "**/*.js",
-      dest: "build/js", // destination folder
-      expand: true, // required when using cwd
-    },
     examples_css: {
       cwd: "src/examples/css", // set working folder / root to copy
       src: "*",

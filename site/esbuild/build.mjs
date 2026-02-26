@@ -5,6 +5,10 @@ const sharedOptions = {
   bundle: true,
   plugins: [externalUtilsPlugin],
   minify: true,
+  define: {
+    // This replaces the string "process.env.IPAPI_TOKEN" with the actual value from Cloudflare's environment
+    "process.env.IPAPI_TOKEN": JSON.stringify(process.env.IPAPI_TOKEN || ""),
+  },
 };
 
 // internationalisation example
@@ -43,4 +47,11 @@ build({
   ...sharedOptions,
   entryPoints: ["src/playground/js/playground.js"],
   outfile: "build/js/playground.js",
+});
+
+// all JS files in /src/js
+build({
+  ...sharedOptions,
+  entryPoints: ["src/js/**/*.js"],
+  outdir: "build/js",
 });
