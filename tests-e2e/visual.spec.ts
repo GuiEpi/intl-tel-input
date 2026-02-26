@@ -1,6 +1,10 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("visual snapshots", () => {
+  test.skip(
+    process.platform !== "linux",
+    "Visual snapshots are recorded on Linux to avoid cross-platform rendering diffs.",
+  );
   test.beforeEach(async ({ page }) => {
     await page.goto("/tests-e2e/fixtures/vanilla.html");
 
