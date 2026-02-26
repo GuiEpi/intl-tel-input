@@ -302,12 +302,17 @@
   }
 
   &--allow-dropdown {
-    //* Hover state - show country is clickable (unless the input is disabled or readonly)
-    .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) {
+    //* If the adjacent input is disabled/readonly, ensure the country button doesn't look clickable.
+    .iti__country-container:has(+ input[disabled]),
+    .iti__country-container:has(+ input[readonly]) {
       button.iti__selected-country {
-        cursor: pointer;
+        cursor: default;
       }
-      //* Only show hover background colour when you hover (1) selected flag/arrow or (2) dropdown contents, but NOT when you hover the selected dial code, which would feel weird.
+    }
+
+    //* Only show hover background colour when you hover (1) selected flag/arrow or (2) dropdown contents, but NOT when you hover the selected dial code, which would feel weird.
+    //* Only apply when the input is NOT disabled/readonly.
+    .iti__country-container:not(:has(+ input[disabled])):not(:has(+ input[readonly])) {
       .iti__selected-country-primary:hover,
       .iti__selected-country:has(+ .iti__dropdown-content:hover) .iti__selected-country-primary {
         background-color: var(--iti-hover-color);
