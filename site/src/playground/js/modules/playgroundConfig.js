@@ -108,7 +108,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     value: "",
     placeholder: "",
     disabled: false,
-    readOnly: false,
+    readonly: false,
   };
 
   const optionMeta = {
@@ -245,11 +245,7 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     value: { type: "text", label: "value (initial)" },
     placeholder: { type: "text" },
     disabled: { type: "boolean" },
-    readOnly: { type: "boolean" },
-  };
-
-  const attributeQueryAliases = {
-    readOnly: "readonly",
+    readonly: { type: "boolean" },
   };
 
   return {
@@ -257,7 +253,6 @@ export function createPlaygroundConfig({ defaults, i18nLanguageCodes, i18nOption
     defaultInputAttributes,
     optionMeta,
     attributeMeta,
-    attributeQueryAliases,
     optionGroups: OPTION_GROUPS,
     specialOptionKeys: SPECIAL_PLAYGROUND_OPTION_KEYS,
   };

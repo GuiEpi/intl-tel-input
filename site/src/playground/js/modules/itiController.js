@@ -14,7 +14,7 @@ function applyInputAttributes(state, telInput) {
   }
 
   telInput.disabled = Boolean(state.disabled);
-  telInput.readOnly = Boolean(state.readOnly);
+  telInput.readonly = Boolean(state.readonly);
 }
 
 function destroyInstance(iti) {

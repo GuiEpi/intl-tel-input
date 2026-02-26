@@ -64,7 +64,7 @@ function shouldDisableKeepDropdownOpen(state) {
     state.useFullscreenPopup ||
     !state.allowDropdown ||
     state.disabled ||
-    state.readOnly ||
+    state.readonly ||
     state.dropdownContainer // uses pos:fixed so can't be kept open on scroll
   );
 }
@@ -164,7 +164,6 @@ const {
   defaultInputAttributes,
   optionMeta,
   attributeMeta,
-  attributeQueryAliases,
   optionGroups,
   specialOptionKeys,
 } = createPlaygroundConfig({
@@ -214,10 +213,7 @@ function getCombinedStateFromControls() {
 }
 
 const initialOptionsState = parseQueryOverrides(defaultInitOptions, optionMeta);
-const initialAttrsState = parseQueryOverrides(defaultInputAttributes, attributeMeta, {
-  aliases: attributeQueryAliases,
-});
-
+const initialAttrsState = parseQueryOverrides(defaultInputAttributes, attributeMeta);
 const initialState = { ...initialOptionsState, ...initialAttrsState };
 
 setFormFromState(optionsForm, initialState, optionMeta, "data-option", { defaultState });
@@ -234,7 +230,6 @@ void initItiWithState(initialState);
 updateUrlFromState(initialState, {
   optionMeta,
   attributeMeta,
-  attributeQueryAliases,
   defaultState,
 });
 
@@ -247,7 +242,6 @@ function scheduleReinit() {
     updateUrlFromState(state, {
       optionMeta,
       attributeMeta,
-      attributeQueryAliases,
       defaultState,
     });
     renderInitCodeFromState(state, initCodeEl, {
@@ -292,7 +286,6 @@ function resetOptionGroupToDefaults(groupKeys) {
   updateUrlFromState(state, {
     optionMeta,
     attributeMeta,
-    attributeQueryAliases,
     defaultState,
   });
 }
@@ -329,7 +322,6 @@ function resetAllToDefaults() {
   updateUrlFromState(state, {
     optionMeta,
     attributeMeta,
-    attributeQueryAliases,
     defaultState,
   });
 }
@@ -359,7 +351,6 @@ if (resetAttrsButton) {
     updateUrlFromState(state, {
       optionMeta,
       attributeMeta,
-      attributeQueryAliases,
       defaultState,
     });
 

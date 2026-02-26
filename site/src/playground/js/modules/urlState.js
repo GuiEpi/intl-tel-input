@@ -2,7 +2,7 @@ import { encodeJsonParam, isDefaultForKey } from "./stateUtils.js";
 
 export function buildShareUrlFromState(
   state,
-  { optionMeta, attributeMeta, attributeQueryAliases, defaultState },
+  { optionMeta, attributeMeta, defaultState },
   { excludeDefaults = false } = {},
 ) {
   const url = new URL(window.location.href);
@@ -13,7 +13,6 @@ export function buildShareUrlFromState(
 
   // Keep unrelated params, but rewrite all playground-controlled params.
   Object.keys(allMeta).forEach((key) => url.searchParams.delete(key));
-  Object.values(attributeQueryAliases).forEach((aliasKey) => url.searchParams.delete(aliasKey));
 
   Object.entries(allMeta).forEach(([key, meta]) => {
     const value = state[key];
