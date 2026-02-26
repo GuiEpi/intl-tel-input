@@ -58,7 +58,7 @@ function toInitOptions(state, { defaultInitOptions, specialOptionKeys, utilsPath
 
   if (state.geoIpLookup) {
     opts.geoIpLookup = (success, failure) => {
-      fetch("https://ipapi.co/json")
+      fetch(`https://ipapi.co/json?token=${process.env.IPAPI_TOKEN}`)
         .then((res) => res.json())
         .then((data) => success(data.country_code))
         .catch(() => failure());

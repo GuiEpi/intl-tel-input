@@ -298,6 +298,10 @@ module.exports = function (grunt) {
     key: "lookup_country",
     title: "Lookup user's country",
     metaDesc: "Automatically set the country based on the user's IP address.",
+    js: {
+      // evaluate the template into tmp, then use esbuild for IPAPI_TOKEN injection
+      destDir: "tmp",
+    },
     content: {
       markupName: "simple_input",
       includeItiScript: true,

@@ -11,6 +11,13 @@ const sharedOptions = {
   },
 };
 
+// lookup country example
+build({
+  ...sharedOptions,
+  entryPoints: ["tmp/examples/js/lookup_country.js"],
+  outfile: "build/examples/js/lookup_country.js",
+});
+
 // internationalisation example
 build({
   ...sharedOptions,
