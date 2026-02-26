@@ -12,7 +12,7 @@ export function bindCopyCodeButton(buttonEl, codeEl) {
   if (!buttonEl || !codeEl) return;
 
   let copiedResetTimer = null;
-  const labelEl = buttonEl.querySelector('[data-role="label"]') || buttonEl;
+  const labelEl = buttonEl.querySelector("[data-role=\"label\"]") || buttonEl;
 
   buttonEl.addEventListener("click", () => {
     const originalLabel = labelEl.textContent;
