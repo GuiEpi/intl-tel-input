@@ -5,7 +5,8 @@
   "license": "MIT",
   "author": "Jack O'Connor (http://jackocnr.com)",
   "scripts": {
-    "test": "jest",
+    "test": "npm run test:js && npm run test:e2e",
+    "test:js": "jest",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:linux": "./scripts/playwright-linux-docker.sh",
