@@ -33,8 +33,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build (skip image sprite task)
-        run: npm run build:ci
+      - name: Install Playwright (Chromium)
+        run: npx playwright install --with-deps chromium
+
+      - name: Build
+        run: npm run build
 
       - name: Run tests
         run: npm test -- --runInBand
+
+      - name: Run e2e tests
+        run: npm run test:e2e
