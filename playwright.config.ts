@@ -4,6 +4,7 @@ export default defineConfig({
   testDir: "tests-e2e",
   timeout: 30_000,
   retries: 0,
+  snapshotPathTemplate: "{testDir}/{testFilePath}-snapshots/{arg}{-projectName}{ext}",
   expect: {
     toHaveScreenshot: {
       // Reduce flakiness from caret blink / CSS animations.
