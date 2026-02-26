@@ -64,7 +64,7 @@ fi
 
 # Run the full workflow inside the container:
 # - install deps
-# - build (CI build skips the image sprite task)
+# - build
 # - run Playwright tests (pass through any extra args)
 exec docker run "${DOCKER_ARGS[@]}" "$IMAGE" bash -lc \
   '
