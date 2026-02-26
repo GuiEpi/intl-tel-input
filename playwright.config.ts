@@ -5,6 +5,7 @@ export default defineConfig({
   timeout: 30_000,
   retries: 0,
   snapshotPathTemplate: "{testDir}/{testFilePath}-snapshots/{arg}{-projectName}{ext}",
+  reporter: [["list"], ["html", { open: "never" }]],
   expect: {
     toHaveScreenshot: {
       // Reduce flakiness from caret blink / CSS animations.
