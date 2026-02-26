@@ -125,14 +125,6 @@ module.exports = function(grunt) {
     'shell:buildSvelte',
   ]);
 
-  // stripped down build task for CI which just builds the core plugin JS that is used by the tests (as we were having issues with sharp lib used by img task, and then the rollup dep used by the buildVue task)
-  grunt.registerTask('build:ci', [
-    'clean:buildJs',
-    'clean:tmpIntermediates',
-    'closure-compiler:utils',
-    'shell:buildJs',
-  ]);
-
   /**
    * VERSIONING TASKS
   */

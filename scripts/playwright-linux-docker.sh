@@ -49,7 +49,6 @@ DOCKER_ARGS=(
   -e npm_config_update_notifier=false
   -e npm_config_fund=false
   -e npm_config_audit=false
-  -e PLAYWRIGHT_DOCKER_SKIP_BUILD
   -e HOST_UID
   -e HOST_GID
   -v "$(pwd):$WORKDIR"
@@ -65,7 +64,7 @@ fi
 
 # Run the full workflow inside the container:
 # - install deps
-# - build (CI build skips the image sprite task) unless PLAYWRIGHT_DOCKER_SKIP_BUILD=1
+# - build (CI build skips the image sprite task)
 # - run Playwright tests (pass through any extra args)
 exec docker run "${DOCKER_ARGS[@]}" "$IMAGE" bash -lc \
   '
@@ -75,27 +74,12 @@ exec docker run "${DOCKER_ARGS[@]}" "$IMAGE" bash -lc \
 
     npm ci
 
-    need_build=1
-    if [[ "${PLAYWRIGHT_DOCKER_SKIP_BUILD:-}" == "1" ]]; then
-      need_build=0
-      # These are required by the E2E fixtures/demos.
-      if [[ ! -f build/js/utils.js || ! -f build/js/intlTelInputWithUtils.js || ! -f build/css/intlTelInput.css ]]; then
-        echo "Required build outputs missing; running build inside Docker anyway." >&2
-        echo "(Tip: run npm run build:ci on your host, or unset PLAYWRIGHT_DOCKER_SKIP_BUILD)" >&2
-        need_build=1
-      else
-        echo "Skipping build inside Docker (PLAYWRIGHT_DOCKER_SKIP_BUILD=1)"
-      fi
-    fi
+    # Closure Compiler (grunt-google-closure-compiler) requires Java.
+    apt-get update
+    apt-get install -y --no-install-recommends openjdk-17-jre-headless
+    rm -rf /var/lib/apt/lists/*
 
-    if [[ "$need_build" == "1" ]]; then
-      # Closure Compiler (grunt-google-closure-compiler) requires Java.
-      apt-get update
-      apt-get install -y --no-install-recommends openjdk-17-jre-headless
-      rm -rf /var/lib/apt/lists/*
-
-      npm run build:ci
-    fi
+    npm run build
 
     npm run test:e2e -- "$@"
 
