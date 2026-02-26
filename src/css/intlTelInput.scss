@@ -306,7 +306,11 @@
     .iti__country-container:has(+ input[disabled]),
     .iti__country-container:has(+ input[readonly]) {
       button.iti__selected-country {
-        cursor: default;
+        cursor: not-allowed;
+
+        .iti__arrow {
+          visibility: hidden;
+        }
       }
     }
 
