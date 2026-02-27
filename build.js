@@ -48,7 +48,7 @@ build({
   outfile: "build/js/intlTelInput.js",
 });
 
-//* minified JS build (later becomes build/js/intlTelInput.min.js)
+//* build/js/intlTelInput.min.js
 build({
   ...shared,
   banner: {
@@ -56,7 +56,7 @@ build({
   },
   entryPoints: ["src/js/intl-tel-input.ts"],
   minify: true,
-  outfile: "tmp/built.min.js",
+  outfile: "build/js/intlTelInput.min.js",
 });
 
 //* build/js/data.js

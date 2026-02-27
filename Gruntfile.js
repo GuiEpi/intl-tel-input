@@ -55,16 +55,7 @@ module.exports = function(grunt) {
     'closure-compiler:utils',
     'shell:genTsDeclaration',
     'shell:buildJs',
-    'build:replaceMinJs',
     'build:components',
-  ]);
-
-  // replace private methods etc in the minified JS
-  grunt.registerTask('build:replaceMinJs', [
-    'clean:replaceMinJs',
-    'validate:replacePatterns',
-    'replace:privateMethods',
-    'replace:instanceFields',
   ]);
 
   // just 4 components
@@ -92,7 +83,6 @@ module.exports = function(grunt) {
     'clean:tmpIntermediates',
     'ensure:utils',
     'shell:buildJs',
-    'build:replaceMinJs',
   ]);
 
   // just react
@@ -161,46 +151,5 @@ module.exports = function(grunt) {
     'replace:readme',
     'replace:issueTemplate',
   ]);
-
-  // AI-written task for when a replace pattern has no matches, normally you don't know which pattern failed, but this will log the name to the output.
-  grunt.registerTask('validate:replacePatterns', 'Validate replace patterns have matches', function() {
-    const config = grunt.config.get('replace');
-    const failed = [];
-    const isPrivate = (key) => ['privateMethods','instanceFields'].includes(key);
-    const resolveValidationSource = (key, src) => {
-      // instanceFields runs after privateMethods and normally reads tmp/one.min.js,
-      // but validate:replacePatterns runs before tmp/one.min.js exists.
-      // Validate instanceFields patterns against tmp/built.min.js instead when available.
-      if (key === 'instanceFields' && src === 'tmp/one.min.js' && grunt.file.exists('tmp/built.min.js')) {
-        return 'tmp/built.min.js';
-      }
-      return src;
-    };
-    Object.keys(config).forEach((key) => {
-      if (!isPrivate(key)) return;
-      const { options, files } = config[key];
-      const patterns = options.patterns || [];
-      Object.entries(files).forEach(([out, src]) => {
-        const validationSrc = resolveValidationSource(key, src);
-        if (!grunt.file.exists(validationSrc)) {
-          grunt.log.warn(`Source file not found for replace:${key}: ${validationSrc}`);
-          return;
-        }
-        const content = grunt.file.read(validationSrc);
-        patterns.forEach((p) => {
-          if (p.match && content.match(p.match) === null) {
-            failed.push({ key, pattern: p.match.toString(), src: validationSrc });
-          }
-        });
-      });
-    });
-    if (failed.length) {
-      grunt.log.error('Replace pattern validation failed:');
-      failed.forEach(f => grunt.log.error(`  [${f.key}] pattern ${f.pattern} had 0 matches in ${f.src}`));
-      grunt.log.warn(`${failed.length} replace patterns had zero matches.`);
-    } else {
-      grunt.log.ok('All replace patterns matched at least once.');
-    }
-  });
 
 };

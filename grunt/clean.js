@@ -16,9 +16,6 @@ module.exports = function(grunt) {
     // Intermediate artifacts used by the build/minify/replace steps.
     tmpIntermediates: ['tmp/built.min.js', 'tmp/one.min.js'],
 
-    // Outputs of build:replaceMinJs (must NOT delete tmp/built.min.js which is its input).
-    replaceMinJs: ['tmp/one.min.js', 'build/js/intlTelInput.min.js'],
-
     // build:utils output
     utils: ['build/js/utils.js'],
 

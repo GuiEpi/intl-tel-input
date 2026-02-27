@@ -78,7 +78,7 @@ export const processDialCodes = (countries: Country[]): DialCodeProcessingResult
   const dialCodeToIso2Map: Record<string, Iso2[]> = {};
 
   //* Add a dial code to this.dialCodeToIso2Map.
-  const _addToDialCodeMap = (iso2: Iso2, dialCode: string) => {
+  const addToDialCodeMap = (iso2: Iso2, dialCode: string) => {
     // Bail if no iso2 or dialCode (this can happen with onlyCountries or excludeCountries options).
     if (!iso2 || !dialCode) {
       return;
@@ -108,10 +108,10 @@ export const processDialCodes = (countries: Country[]): DialCodeProcessingResult
     // add the dial code partial matches to the map
     for (let k = 1; k < c.dialCode.length; k++) {
       const partialDialCode = c.dialCode.substring(0, k);
-      _addToDialCodeMap(c.iso2, partialDialCode);
+      addToDialCodeMap(c.iso2, partialDialCode);
     }
     // add the full dial code to the map
-    _addToDialCodeMap(c.iso2, c.dialCode);
+    addToDialCodeMap(c.iso2, c.dialCode);
 
     if (c.areaCodes) {
       const rootIso2Code = dialCodeToIso2Map[c.dialCode][0];
@@ -122,11 +122,11 @@ export const processDialCodes = (countries: Country[]): DialCodeProcessingResult
           const partialAreaCode = areaCode.substring(0, k);
           const partialDialCode = c.dialCode + partialAreaCode;
           //* Start with the root country, as that also matches this partial dial code.
-          _addToDialCodeMap(rootIso2Code, partialDialCode);
-          _addToDialCodeMap(c.iso2, partialDialCode);
+          addToDialCodeMap(rootIso2Code, partialDialCode);
+          addToDialCodeMap(c.iso2, partialDialCode);
         }
         //* Add the full area code.
-        _addToDialCodeMap(c.iso2, c.dialCode + areaCode);
+        addToDialCodeMap(c.iso2, c.dialCode + areaCode);
       }
     }
   }
