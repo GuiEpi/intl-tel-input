@@ -30,7 +30,10 @@
   // State
   let inputElement: HTMLInputElement | undefined = $state();
   let instance: Iti | undefined = $state();
-  let wasPreviouslyValid: boolean | null = $state(null);
+  let lastEmittedNumber: string | undefined = $state();
+  let lastEmittedCountry: string | undefined = $state();
+  let lastEmittedValidity: boolean | undefined = $state();
+  let lastEmittedErrorCode: number | null | undefined = $state();
   let hasInitialized = $state(false);
 
   // Validation helper
@@ -43,21 +46,39 @@
 
   // Update handlers
   const updateValidity = () => {
+    if (!instance) return;
     const isCurrentlyValid = isValid();
-    if (wasPreviouslyValid !== isCurrentlyValid) {
-      wasPreviouslyValid = isCurrentlyValid;
-      onChangeValidity?.(!!isCurrentlyValid);
-      onChangeErrorCode?.(isCurrentlyValid ? null : instance!.getValidationError());
+    if (isCurrentlyValid === null) return;
+
+    const valid = !!isCurrentlyValid;
+    const errorCode = valid ? null : instance.getValidationError();
+
+    if (valid !== lastEmittedValidity) {
+      lastEmittedValidity = valid;
+      onChangeValidity?.(valid);
+    }
+
+    if (errorCode !== lastEmittedErrorCode) {
+      lastEmittedErrorCode = errorCode;
+      onChangeErrorCode?.(errorCode);
     }
   };
 
   const updateValue = () => {
-    onChangeNumber?.(instance?.getNumber() ?? "");
+    const number = instance?.getNumber() ?? "";
+    if (number !== lastEmittedNumber) {
+      lastEmittedNumber = number;
+      onChangeNumber?.(number);
+    }
     updateValidity();
   };
 
   const updateCountry = () => {
-    onChangeCountry?.(instance?.getSelectedCountryData().iso2 ?? "");
+    const country = instance?.getSelectedCountryData().iso2 ?? "";
+    if (country !== lastEmittedCountry) {
+      lastEmittedCountry = country;
+      onChangeCountry?.(country);
+    }
     updateValue();
   };
 
@@ -68,7 +89,15 @@
       inputElement.addEventListener("countrychange", updateCountry);
       if (value) instance.setNumber(value);
       if (disabled) instance.setDisabled(disabled);
-      wasPreviouslyValid = isValid();
+
+      lastEmittedNumber = instance.getNumber() ?? "";
+      lastEmittedCountry = instance.getSelectedCountryData().iso2 ?? "";
+
+      const initialValid = isValid();
+      if (initialValid !== null) {
+        lastEmittedValidity = !!initialValid;
+        lastEmittedErrorCode = initialValid ? null : instance.getValidationError();
+      }
       hasInitialized = true;
     }
   });

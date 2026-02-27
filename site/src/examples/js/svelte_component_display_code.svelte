@@ -10,19 +10,28 @@
     "Invalid number",
   ];
 
-  let isValid = $state(null);
-  let number = $state(null);
-  let errorCode = $state(null);
-  let notice = $state(null);
+  let number = $state("");
+  let isValid = $state(false);
+  let errorCode = $state(0);
+  let noticeMode = $state("off");
+
+  const notice = $derived.by(() => {
+    if (noticeMode === "off") {
+      return null;
+    }
+    if (isValid) {
+      return noticeMode === "submit" ? `Valid number: ${number}` : "";
+    }
+    if (number) {
+      const errorMessage = errorMap[errorCode || 0] || "Invalid number";
+      return `Error: ${errorMessage}`;
+    }
+    return "Please enter a number";
+  });
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (isValid) {
-      notice = `Valid number: ${number}`;
-    } else {
-      const errorMessage = errorMap[errorCode || 0];
-      notice = `Error: ${errorMessage}`;
-    }
+    noticeMode = "submit";
   };
 </script>
 
@@ -34,6 +43,9 @@
     options={{
       initialCountry: "us",
       loadUtils: () => import("intl-tel-input/utils"),
+    }}
+    inputProps={{
+      onblur: () => (noticeMode = "blur"),
     }}
   />
   <button type="submit">Validate</button>
