@@ -3,7 +3,7 @@ import "@angular/compiler";
 import { bootstrapApplication } from "@angular/platform-browser";
 import { Component, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { IntlTelInputComponent } from "../../../build/intl-tel-input/angular/IntlTelInput.js";
+import IntlTelInput from "../../../build/intl-tel-input/angular/IntlTelInput.js";
 
 @Component({
   selector: "#app",
@@ -35,10 +35,10 @@ import { IntlTelInputComponent } from "../../../build/intl-tel-input/angular/Int
     </form>
   `,
   standalone: true,
-  imports: [IntlTelInputComponent, ReactiveFormsModule]
+  imports: [IntlTelInput, ReactiveFormsModule]
 })
 export class AppComponent {
-  @ViewChild("telInput") telInput!: IntlTelInputComponent;
+  @ViewChild("telInput") telInput!: IntlTelInput;
 
   initOptions = {
     initialCountry: "us",
