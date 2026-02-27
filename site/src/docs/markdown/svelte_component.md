@@ -33,7 +33,7 @@ Then, add something like this to your code:
 </script>
 
 <IntlTelInput
-  options={{
+  initOptions={{
     initialCountry: 'us',
   }}
 />
@@ -59,13 +59,13 @@ Default: `{}`
 
 The props to pass to the input element, e.g. `id`, `class`, `placeholder`, `required`, etc. *Note: We recommend using the separate `disabled` prop instead of `inputProps.disabled`.*
 
-###### options
+###### initOptions
 Type: `Object`  
 Default: `{}`  
 
 An object containing the [initialisation options](/docs/options) to pass to the plugin. You can use these exactly the same way as with the main JavaScript plugin.
 
-###### value
+###### initialValue
 Type: `String`  
 Default: `""`  
 
