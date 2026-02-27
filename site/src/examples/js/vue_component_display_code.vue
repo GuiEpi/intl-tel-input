@@ -2,26 +2,21 @@
   import IntlTelInput from "intl-tel-input/vue";
   import "intl-tel-input/styles";
 
-  const isValid = ref(null);
-  const number = ref(null);
-  const errorCode = ref(null);
-  const notice = ref(null);
+  const number = ref("");
+  const isValid = ref(false);
+  const errorCode = ref(0);
+  const noticeMode = ref("off");
 
-  const errorMap = [
-    "Invalid number",
-    "Invalid country code",
-    "Too short",
-    "Too long",
-    "Invalid number",
-  ];
+  const notice = computed(() => {
+    // Logic to determine the notice message based on the current state
+  });
 
   const handleSubmit = () => {
-    if (isValid.value) {
-      notice.value = `Valid number: ${number.value}`;
-    } else {
-      const errorMessage = errorMap[errorCode.value || 0];
-      notice.value = `Error: ${errorMessage}`;
-    }
+    noticeMode.value = "submit";
+  };
+
+  const handleBlur = () => {
+    noticeMode.value = "blur";
   };
 </script>
 
@@ -34,6 +29,9 @@
       :options="{
         initialCountry: 'us',
         loadUtils: () => import('intl-tel-input/utils'),
+      }"
+      :inputProps="{
+        onBlur: handleBlur,
       }"
     />
     <button type="submit">Validate</button>

@@ -2,31 +2,13 @@
   import IntlTelInput from "intl-tel-input/svelteWithUtils";
   import "intl-tel-input/styles";
 
-  const errorMap = [
-    "Invalid number",
-    "Invalid country code",
-    "Too short",
-    "Too long",
-    "Invalid number",
-  ];
-
   let number = $state("");
   let isValid = $state(false);
   let errorCode = $state(0);
   let noticeMode = $state("off");
 
   const notice = $derived.by(() => {
-    if (noticeMode === "off") {
-      return null;
-    }
-    if (isValid) {
-      return noticeMode === "submit" ? `Valid number: ${number}` : "";
-    }
-    if (number) {
-      const errorMessage = errorMap[errorCode || 0] || "Invalid number";
-      return `Error: ${errorMessage}`;
-    }
-    return "Please enter a number";
+    // Determine the notice message based on the current state
   });
 
   const handleSubmit = (event) => {

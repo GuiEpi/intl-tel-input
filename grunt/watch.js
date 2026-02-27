@@ -33,7 +33,7 @@ module.exports = function(grunt) {
     },
     angular: {
       files: [
-        "angular/src/intl-tel-input/angular.tsx",
+        "angular/src/intl-tel-input/angular.ts",
         "angular/demo/form/form.component.ts",
         "angular/demo/set-number/set-number.component.ts",
         "angular/demo/simple/simple.component.ts",

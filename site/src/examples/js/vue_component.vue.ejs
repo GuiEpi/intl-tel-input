@@ -1,5 +1,5 @@
 <script setup>
-  import { ref } from "vue";
+  import { computed, ref } from "vue";
   import IntlTelInput from "../../../build/intl-tel-input/vue/exports/IntlTelInput.mjs";
 
   const errorMap = [
@@ -10,18 +10,31 @@
     "Invalid number",
   ];
 
-  const isValid = ref(null);
-  const number = ref(null);
-  const errorCode = ref(null);
-  const notice = ref(null);
+  const number = ref("");
+  const isValid = ref(false);
+  const errorCode = ref(0);
+  const noticeMode = ref("off");
+
+  const notice = computed(() => {
+    if (noticeMode.value === "off") {
+      return null;
+    }
+    if (isValid.value) {
+      return noticeMode.value === "submit" ? `Valid number: ${number.value}` : "";
+    }
+    if (number.value) {
+      const errorMessage = errorMap[errorCode.value || 0] || "Invalid number";
+      return `Error: ${errorMessage}`;
+    }
+    return "Please enter a number";
+  });
 
   const handleSubmit = () => {
-    if (isValid.value) {
-      notice.value = `Valid number: ${number.value}`;
-    } else {
-      const errorMessage = errorMap[errorCode.value || 0] || "Invalid number";
-      notice.value = `Error: ${errorMessage}`;
-    }
+    noticeMode.value = "submit";
+  };
+
+  const handleBlur = () => {
+    noticeMode.value = "blur";
   };
 </script>
 
@@ -40,6 +53,7 @@
         :inputProps="{
           class: 'form-control',
           title: 'Enter your phone number',
+          onBlur: handleBlur,
         }"
       />
     </div>

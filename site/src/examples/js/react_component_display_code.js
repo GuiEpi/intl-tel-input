@@ -8,10 +8,9 @@ const App = () => {
   const [errorCode, setErrorCode] = useState(0);
   const [noticeMode, setNoticeMode] = useState("off");
 
-  const notice = useMemo(
-    () => putYourNoticeLogicHere(noticeMode, isValid, number, errorCode),
-    [noticeMode, isValid, number, errorCode],
-  );
+  const notice = useMemo(() => {
+    // Logic to determine the notice based on the validation result
+  }, [noticeMode, isValid, number, errorCode]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
