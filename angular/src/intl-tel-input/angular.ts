@@ -95,6 +95,12 @@ export class IntlTelInputComponent
 
   private iti: Iti | null = null;
   private countryChangeHandler = () => this.handleInput();
+
+  private lastEmittedNumber?: string;
+  private lastEmittedCountry?: string;
+  private lastEmittedValidity?: boolean;
+  private lastEmittedErrorCode?: number | null;
+
   // eslint-disable-next-line class-methods-use-this
   private onChange: (value: string) => void = () => {};
   // eslint-disable-next-line class-methods-use-this
@@ -137,23 +143,41 @@ export class IntlTelInputComponent
     const num = this.iti.getNumber() || "";
     const countryIso = this.iti.getSelectedCountryData().iso2 || "";
 
-    this.numberChange.emit(num);
-    this.countryChange.emit(countryIso);
+    let hasChanged = false;
+    if (num !== this.lastEmittedNumber) {
+      this.lastEmittedNumber = num;
+      this.numberChange.emit(num);
+      this.onChange(num);
+      hasChanged = true;
+    }
+
+    if (countryIso !== this.lastEmittedCountry) {
+      this.lastEmittedCountry = countryIso;
+      this.countryChange.emit(countryIso);
+      hasChanged = true;
+    }
 
     const isValid = this.usePreciseValidation
       ? this.iti.isValidNumberPrecise()
       : this.iti.isValidNumber();
 
-    if (isValid) {
-      this.validityChange.emit(true);
-      this.errorCodeChange.emit(null);
-    } else {
-      this.validityChange.emit(false);
-      this.errorCodeChange.emit(this.iti.getValidationError());
+    const errorCode = isValid ? null : this.iti.getValidationError();
+
+    if (isValid !== this.lastEmittedValidity) {
+      this.lastEmittedValidity = isValid;
+      this.validityChange.emit(isValid);
+      hasChanged = true;
     }
 
-    this.onChange(num);
-    this.onValidatorChange();
+    if (errorCode !== this.lastEmittedErrorCode) {
+      this.lastEmittedErrorCode = errorCode;
+      this.errorCodeChange.emit(errorCode);
+      hasChanged = true;
+    }
+
+    if (hasChanged) {
+      this.onValidatorChange();
+    }
   }
 
   handleBlur(event: FocusEvent) {
