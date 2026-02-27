@@ -35,7 +35,10 @@ const displayed = computed(() => props.value ?? props.modelValue ?? "");
 
 const input = ref<HTMLInputElement | null>(null);
 const instance = ref<ReturnType<typeof intlTelInput> | null>(null);
-const wasPreviouslyValid = ref(false);
+const lastEmittedNumber = ref<string>();
+const lastEmittedCountry = ref<string>();
+const lastEmittedValidity = ref<boolean>();
+const lastEmittedErrorCode = ref<number | null>();
 
 const isValid = () => {
   if (instance.value) {
@@ -48,30 +51,43 @@ const isValid = () => {
 };
 
 const updateValidity = () => {
-  let isCurrentlyValid = isValid();
+  const isCurrentlyValid = isValid();
+  if (isCurrentlyValid === null) return;
 
-  if (wasPreviouslyValid.value !== isCurrentlyValid) {
-    wasPreviouslyValid.value = isCurrentlyValid;
+  const valid = !!isCurrentlyValid;
+  const errorCode = valid
+    ? null
+    : instance.value?.getValidationError?.() ?? null;
 
-    emit("changeValidity", !!isCurrentlyValid);
-    emit(
-      "changeErrorCode",
-      isCurrentlyValid ? null : instance.value?.getValidationError?.() ?? null,
-    );
+  if (valid !== lastEmittedValidity.value) {
+    lastEmittedValidity.value = valid;
+    emit("changeValidity", valid);
+  }
+
+  if (errorCode !== lastEmittedErrorCode.value) {
+    lastEmittedErrorCode.value = errorCode;
+    emit("changeErrorCode", errorCode);
   }
 };
 
 const updateValue = () => {
   const number = instance.value?.getNumber() ?? "";
 
-  emit("changeNumber", number);
-  emit("update:modelValue", number);
+  if (number !== lastEmittedNumber.value) {
+    lastEmittedNumber.value = number;
+    emit("changeNumber", number);
+    emit("update:modelValue", number);
+  }
 
   updateValidity();
 };
 
 const updateCountry = () => {
-  emit("changeCountry", instance.value?.getSelectedCountryData().iso2 ?? "");
+  const country = instance.value?.getSelectedCountryData().iso2 ?? "";
+  if (country !== lastEmittedCountry.value) {
+    lastEmittedCountry.value = country;
+    emit("changeCountry", country);
+  }
   updateValue();
 };
 
@@ -86,7 +102,17 @@ onMounted(() => {
     if (props.disabled) {
       instance.value.setDisabled(props.disabled);
     }
-    wasPreviouslyValid.value = isValid();
+
+    lastEmittedNumber.value = instance.value.getNumber?.() ?? "";
+    lastEmittedCountry.value = instance.value.getSelectedCountryData().iso2 ?? "";
+
+    const initialValid = isValid();
+    if (initialValid !== null) {
+      lastEmittedValidity.value = !!initialValid;
+      lastEmittedErrorCode.value = initialValid
+        ? null
+        : instance.value.getValidationError?.() ?? null;
+    }
   }
 });
 
