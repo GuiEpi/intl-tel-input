@@ -11,7 +11,8 @@ import "intl-tel-input/styles";
         #telInput
         formControlName="phone"
         name="phone"
-        [initOptions]="initOptions"
+        initialCountry="us"
+        [loadUtils]="loadUtils"
       />
       <button type="submit">Validate</button>
       <div class="notice">
@@ -25,10 +26,7 @@ import "intl-tel-input/styles";
 export class AppComponent {
   @ViewChild("telInput") telInput!: IntlTelInput;
 
-  initOptions = {
-    initialCountry: "us",
-    loadUtils: () => import("intl-tel-input/utils"),
-  };
+  loadUtils = () => import("intl-tel-input/utils");
 
   fg: FormGroup = new FormGroup({
     phone: new FormControl<string>("", [Validators.required]),

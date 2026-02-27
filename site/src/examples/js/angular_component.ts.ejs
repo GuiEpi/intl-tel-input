@@ -14,7 +14,9 @@ import IntlTelInput from "../../../build/intl-tel-input/angular/IntlTelInput.js"
           #telInput
           formControlName="phone"
           name="phone"
-          [initOptions]="initOptions"
+          initialCountry="us"
+          [loadUtils]="loadUtils"
+          searchInputClass="form-control"
           [inputProps]="{ class: 'form-control', title: 'Enter your phone number' }"
         />
       </div>
@@ -40,11 +42,7 @@ import IntlTelInput from "../../../build/intl-tel-input/angular/IntlTelInput.js"
 export class AppComponent {
   @ViewChild("telInput") telInput!: IntlTelInput;
 
-  initOptions = {
-    initialCountry: "us",
-    loadUtils: () => import('<%= cacheBust('/intl-tel-input/js/utils.js') %>'),
-    searchInputClass: "form-control",
-  };
+  loadUtils = () => import('<%= cacheBust('/intl-tel-input/js/utils.js') %>');
 
   fg: FormGroup = new FormGroup({
     phone: new FormControl<string>("", [Validators.required]),
