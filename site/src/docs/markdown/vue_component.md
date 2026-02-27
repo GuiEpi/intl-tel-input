@@ -35,7 +35,7 @@ Then, add something like this to your code:
 
 <template>
   <IntlTelInput
-    :options="{
+    :initOptions="{
       initialCountry: 'us',
     }"
   />
@@ -62,7 +62,7 @@ Default: `{}`
 
 The props to pass to the input element, e.g. `id`, `class`, `placeholder`, `required`, `onBlur`. *Note: we recommend using the separate `disabled` prop instead of `inputProps.disabled`.*
 
-###### options
+###### initOptions
 Type: `Object`  
 Default: `{}`  
 
@@ -74,7 +74,7 @@ Default: `false`
 
 By default, the component uses the plugin's `isValidNumber` method for validation, but if you'd rather use `isValidNumberPrecise`, set this to `true`.
 
-###### value
+###### initialValue
 Type: `String`  
 Default: `""`  
 
