@@ -9,7 +9,8 @@
     <%= bootstrap_styles %>
 
     <!-- ITI styles - show largeFlags version on desktop -->
-    <link rel="stylesheet" href="<%= cacheBust('/intl-tel-input/css/intlTelInput.min.css') %>" media="screen and (max-width: 991px)">
+    <% const itiCss = isDevBuild ? 'intlTelInput.css' : 'intlTelInput.min.css'; %>
+    <link rel="stylesheet" href="<%= cacheBust('/intl-tel-input/css/' + itiCss) %>" media="screen and (max-width: 991px)">
     <link rel="stylesheet" href="<%= cacheBust('/css/intlTelInput-largeFlags.css') %>" media="screen and (min-width: 992px)">
 
     <!-- website styles must come after ITI styles as contains dark mode overrides -->

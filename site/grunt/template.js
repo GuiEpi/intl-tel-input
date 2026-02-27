@@ -48,7 +48,7 @@ module.exports = function (grunt) {
       src: "src/shared/iti_script.html.ejs",
       dest: "tmp/shared/iti_script.html",
       options: {
-        data: () => ({ cacheBust }),
+        data: () => ({ cacheBust, isDevBuild }),
       },
     },
     website_css: makeCacheBustTask("build/css/website.css"),
@@ -82,6 +82,7 @@ module.exports = function (grunt) {
           homepageMetaDesc,
           homepageCanonicalUrl,
           cacheBust,
+          isDevBuild,
           ...readCommonPagePartials(grunt, { cacheBust, isDevBuild }),
           og_meta_tags: buildOpenGraphMetaTags({
             title: homepageTitle,

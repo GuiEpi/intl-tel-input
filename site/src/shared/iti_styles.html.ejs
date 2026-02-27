@@ -1,4 +1,5 @@
+<% const cssFile = isDevBuild ? 'intlTelInput.css' : 'intlTelInput.min.css'; %>
 <link
   rel="stylesheet"
-  href="<%= cacheBust('/intl-tel-input/css/intlTelInput.min.css') %>"
+  href="<%= cacheBust('/intl-tel-input/css/' + cssFile) %>"
 />
