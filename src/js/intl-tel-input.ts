@@ -57,9 +57,49 @@ let id = 0;
 const iso2Set: Set<Iso2> = new Set(allCountries.map((c) => c.iso2));
 const isIso2 = (val: string): val is Iso2 => iso2Set.has(val as Iso2);
 
+type ForEachInstanceArgsMap = {
+  handleUtils: [];
+  handleUtilsFailure: [error?: unknown];
+  handleAutoCountry: [];
+  handleAutoCountryFailure: [];
+};
+
 //* This is our plugin class that we will create an instance of
 // eslint-disable-next-line no-unused-vars
 export class Iti {
+  // Internal instance notification used by utils/geoip loaders.
+  // Kept public so module-level helpers (e.g. attachUtils) can call it, while still allowing
+  // access to private instance methods.
+  static forEachInstance<M extends keyof ForEachInstanceArgsMap>(
+    method: M,
+    ...args: ForEachInstanceArgsMap[M]
+  ): void {
+    const instances = intlTelInput.instances;
+    const values = instances instanceof Map ? Array.from(instances.values()) : Object.values(instances);
+    const arg = args[0];
+
+    values.forEach((instance) => {
+      if (!(instance instanceof Iti)) {
+        return;
+      }
+
+      switch (method) {
+        case "handleUtils":
+          instance.#handleUtils();
+          break;
+        case "handleUtilsFailure":
+          instance.#handleUtilsFailure(arg);
+          break;
+        case "handleAutoCountry":
+          instance.#handleAutoCountry();
+          break;
+        case "handleAutoCountryFailure":
+          instance.#handleAutoCountryFailure();
+          break;
+      }
+    });
+  }
+
   //* PUBLIC FIELDS - READONLY
   //* Can't be private as it's called from intlTelInput convenience wrapper.
   public readonly id: number;
@@ -396,7 +436,7 @@ export class Iti {
     //* 2) Another instance has already started loading (do nothing - just wait for loading callback to fire)
     //* 3) Not already started loading (start)
     if (intlTelInput.autoCountry) {
-      this.handleAutoCountry();
+      this.#handleAutoCountry();
     } else {
       this.#ui.selectedCountryInner.classList.add(CLASSES.LOADING);
 
@@ -411,19 +451,18 @@ export class Iti {
             if (isIso2(iso2Lower)) {
               intlTelInput.autoCountry = iso2Lower;
               //* Tell all instances the auto country is ready.
-              //TODO: this should just be the current instances
               //* UPDATE: use setTimeout in case their geoIpLookup function calls this callback straight
               //* away (e.g. if they have already done the geo ip lookup somewhere else). Using
               //* setTimeout means that the current thread of execution will finish before executing
               //* this, which allows the plugin to finish initialising.
-              setTimeout(() => forEachInstance("handleAutoCountry"));
+              setTimeout(() => Iti.forEachInstance("handleAutoCountry"));
             } else {
-              forEachInstance("handleAutoCountryFailure");
+              Iti.forEachInstance("handleAutoCountryFailure");
             }
           };
           const failureCallback = () => {
             this.#ui.selectedCountryInner.classList.remove(CLASSES.LOADING);
-            forEachInstance("handleAutoCountryFailure");
+            Iti.forEachInstance("handleAutoCountryFailure");
           };
           this.#options.geoIpLookup(successCallback, failureCallback);
         }
@@ -1302,11 +1341,11 @@ export class Iti {
   }
 
   //**************************
-  //*  SECRET PUBLIC METHODS
+  //*  INTERNAL METHODS
   //**************************
 
-  //* This is called when the geoip call returns.
-  public handleAutoCountry(): void {
+  //* Called when the geoip call returns.
+  #handleAutoCountry(): void {
     // If destroyed/unmounted, abort any UI work but still resolve the init promise
     if (!this.#ui.telInput) {
       this.#resolveAutoCountryPromise?.();
@@ -1331,8 +1370,8 @@ export class Iti {
     }
   }
 
-  //* This is called when the geoip call fails or times out.
-  public handleAutoCountryFailure(): void {
+  //* Called when the geoip call fails or times out.
+  #handleAutoCountryFailure(): void {
     // If instance destroyed/unmounted, just reject the promise and avoid DOM/state ops
     if (!this.#ui.telInput) {
       this.#rejectAutoCountryPromise?.();
@@ -1344,8 +1383,8 @@ export class Iti {
     this.#rejectAutoCountryPromise();
   }
 
-  //* This is called when the utils request completes.
-  public handleUtils(): void {
+  //* Called when the utils request completes.
+  #handleUtils(): void {
     // If instance destroyed/unmounted, avoid touching DOM/state but still resolve promise
     if (!this.#ui.telInput) {
       this.#resolveUtilsScriptPromise?.();
@@ -1367,8 +1406,8 @@ export class Iti {
     this.#resolveUtilsScriptPromise();
   }
 
-  //* This is called when the utils request fails or times out.
-  public handleUtilsFailure(error): void {
+  //* Called when the utils request fails or times out.
+  #handleUtilsFailure(error: unknown): void {
     // If instance destroyed/unmounted, just reject the promise and avoid DOM/state ops
     if (!this.#ui.telInput) {
       this.#rejectUtilsScriptPromise?.(error);
@@ -1656,11 +1695,11 @@ const attachUtils = (source: UtilsLoader): Promise<boolean> | null => {
         }
 
         intlTelInput.utils = utils;
-        forEachInstance("handleUtils");
+        Iti.forEachInstance("handleUtils");
         return true;
       })
       .catch((error: Error) => {
-        forEachInstance("handleUtilsFailure", error);
+        Iti.forEachInstance("handleUtilsFailure", error);
         throw error;
       });
   }
@@ -1668,26 +1707,6 @@ const attachUtils = (source: UtilsLoader): Promise<boolean> | null => {
 };
 
 //* Convenience wrapper.
-
-//* Run a method on each instance of the plugin.
-type InstanceMethodMap = {
-  handleUtils: () => void;
-  handleUtilsFailure: (reason?: unknown) => void;
-  handleAutoCountry: () => void;
-  handleAutoCountryFailure: () => void;
-};
-
-const forEachInstance = <K extends keyof InstanceMethodMap>(
-  method: K,
-  ...args: Parameters<InstanceMethodMap[K]>
-): void => {
-  Object.values(intlTelInput.instances).forEach((instance) => {
-    const fn = (instance as unknown as InstanceMethodMap)[method];
-    if (typeof fn === "function") {
-      fn.apply(instance, args);
-    }
-  });
-};
 
 const intlTelInput: IntlTelInputInterface = Object.assign(
   (input: HTMLInputElement, options?: SomeOptions): Iti => {
