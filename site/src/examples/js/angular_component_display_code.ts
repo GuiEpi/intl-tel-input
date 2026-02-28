@@ -1,4 +1,4 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import IntlTelInput from "intl-tel-input/angular";
 import "intl-tel-input/styles";
@@ -23,7 +23,7 @@ import "intl-tel-input/styles";
   standalone: true,
   imports: [IntlTelInput, ReactiveFormsModule],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   @ViewChild("telInput") telInput!: IntlTelInput;
 
   loadUtils = () => import("intl-tel-input/utils");
@@ -32,16 +32,22 @@ export class AppComponent {
     phone: new FormControl<string>("", [Validators.required]),
   });
 
-  notice: string | null = null;
+  isSubmitted = false;
 
   get phone() {
     return this.fg.get("phone");
   }
 
+  ngOnInit(): void {
+    this.phone?.valueChanges.subscribe(() => {
+      this.isSubmitted = false;
+    });
+  }
+
   handleSubmit(): void {
     this.phone?.markAsTouched();
     if (this.fg.valid) {
-      this.notice = `Valid number: ${this.telInput.getInstance()?.getNumber()}`;
+      this.isSubmitted = true;
     }
   }
 }

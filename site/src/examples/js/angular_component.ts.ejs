@@ -1,7 +1,7 @@
 import "zone.js";
 import "@angular/compiler";
 import { bootstrapApplication } from "@angular/platform-browser";
-import { Component, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import IntlTelInput from "../../../build/intl-tel-input/angular/IntlTelInput.js";
 
@@ -30,8 +30,8 @@ import IntlTelInput from "../../../build/intl-tel-input/angular/IntlTelInput.js"
           Please enter a number
         } @else if (phone?.errors?.["invalidPhone"] && phone?.touched) {
           {{ phone?.errors?.["invalidPhone"].errorMessage }}
-        } @else if (notice) {
-          {{ notice }}
+        } @else if (isSubmitted && fg.valid) {
+          Valid number: {{ telInput.getInstance()?.getNumber() }}
         }
       </div>
     </form>
@@ -39,7 +39,7 @@ import IntlTelInput from "../../../build/intl-tel-input/angular/IntlTelInput.js"
   standalone: true,
   imports: [IntlTelInput, ReactiveFormsModule]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   @ViewChild("telInput") telInput!: IntlTelInput;
 
   loadUtils = () => import('<%= cacheBust('/intl-tel-input/js/utils.js') %>');
@@ -48,16 +48,22 @@ export class AppComponent {
     phone: new FormControl<string>("", [Validators.required]),
   });
 
-  notice: string | null = null;
+  isSubmitted = false;
 
   get phone() {
     return this.fg.get("phone");
   }
 
+  ngOnInit(): void {
+    this.phone?.valueChanges.subscribe(() => {
+      this.isSubmitted = false;
+    });
+  }
+
   handleSubmit(): void {
     this.phone?.markAsTouched();
     if (this.fg.valid) {
-      this.notice = `Valid number: ${this.telInput.getInstance()?.getNumber()}`;
+      this.isSubmitted = true;
     }
   }
 }
