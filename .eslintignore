@@ -8,3 +8,4 @@ Gruntfile.js
 site/static/js/highlight.min.js
 site/static/js/silktide-consent-manager.js
 site/src/examples/js/*_display_code*
+playwright-report/
