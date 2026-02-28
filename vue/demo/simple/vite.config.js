@@ -7,5 +7,8 @@ export default defineConfig({
   define: {
     "process.env.VERSION": `"${version}"`,
   },
+  esbuild: {
+    minify: false,
+  },
   plugins: [vue()],
 });
