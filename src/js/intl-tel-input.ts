@@ -43,6 +43,7 @@ import {
   PLACEHOLDER_MODES,
 } from "./modules/constants";
 import { Numerals } from "./modules/core/numerals";
+import type { ForEachInstanceArgsMap } from "./modules/types/forEachInstanceArgsMap";
 
 declare global {
   interface HTMLInputElement {
@@ -57,49 +58,9 @@ let id = 0;
 const iso2Set: Set<Iso2> = new Set(allCountries.map((c) => c.iso2));
 const isIso2 = (val: string): val is Iso2 => iso2Set.has(val as Iso2);
 
-type ForEachInstanceArgsMap = {
-  handleUtils: [];
-  handleUtilsFailure: [error?: unknown];
-  handleAutoCountry: [];
-  handleAutoCountryFailure: [];
-};
-
 //* This is our plugin class that we will create an instance of
 // eslint-disable-next-line no-unused-vars
 export class Iti {
-  // Internal instance notification used by utils/geoip loaders.
-  // Kept public so module-level helpers (e.g. attachUtils) can call it, while still allowing
-  // access to private instance methods.
-  static forEachInstance<M extends keyof ForEachInstanceArgsMap>(
-    method: M,
-    ...args: ForEachInstanceArgsMap[M]
-  ): void {
-    const instances = intlTelInput.instances;
-    const values = instances instanceof Map ? Array.from(instances.values()) : Object.values(instances);
-    const arg = args[0];
-
-    values.forEach((instance) => {
-      if (!(instance instanceof Iti)) {
-        return;
-      }
-
-      switch (method) {
-        case "handleUtils":
-          instance.#handleUtils();
-          break;
-        case "handleUtilsFailure":
-          instance.#handleUtilsFailure(arg);
-          break;
-        case "handleAutoCountry":
-          instance.#handleAutoCountry();
-          break;
-        case "handleAutoCountryFailure":
-          instance.#handleAutoCountryFailure();
-          break;
-      }
-    });
-  }
-
   //* PUBLIC FIELDS - READONLY
   //* Can't be private as it's called from intlTelInput convenience wrapper.
   public readonly id: number;
@@ -1653,6 +1614,44 @@ export class Iti {
     } else {
       this.#ui.selectedCountry.removeAttribute("disabled");
     }
+  }
+
+  //********************
+  //*  STATIC METHODS
+  //********************
+
+  // Internal instance notification used by utils/geoip loaders.
+  // Kept public so module-level helpers (e.g. attachUtils) can call it, while still allowing
+  // access to private instance methods.
+  static forEachInstance<M extends keyof ForEachInstanceArgsMap>(
+    method: M,
+    ...args: ForEachInstanceArgsMap[M]
+  ): void {
+    const instances = intlTelInput.instances;
+    const values =
+      instances instanceof Map ? Array.from(instances.values()) : Object.values(instances);
+    const arg = args[0];
+
+    values.forEach((instance) => {
+      if (!(instance instanceof Iti)) {
+        return;
+      }
+
+      switch (method) {
+        case "handleUtils":
+          instance.#handleUtils();
+          break;
+        case "handleUtilsFailure":
+          instance.#handleUtilsFailure(arg);
+          break;
+        case "handleAutoCountry":
+          instance.#handleAutoCountry();
+          break;
+        case "handleAutoCountryFailure":
+          instance.#handleAutoCountryFailure();
+          break;
+      }
+    });
   }
 }
 
