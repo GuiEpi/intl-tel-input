@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import intlTelInput from "./intl-tel-input";
 import type { SomeOptions } from "./modules/types/public-api";
-import { onMounted, onUnmounted, ref, watch, computed } from "vue";
+import { onMounted, onUnmounted, ref, shallowRef, watch, computed } from "vue";
 import type { InputHTMLAttributes } from "vue";
 
 interface Props {
@@ -33,7 +33,9 @@ const emit = defineEmits([
 const displayed = computed(() => props.value ?? props.modelValue ?? "");
 
 const input = ref<HTMLInputElement | null>(null);
-const instance = ref<ReturnType<typeof intlTelInput> | null>(null);
+// Use shallowRef so Vue does not Proxy-wrap the Iti class instance.
+// A reactive Proxy breaks private fields (e.g. `#ui`) when calling instance methods.
+const instance = shallowRef<ReturnType<typeof intlTelInput> | null>(null);
 const lastEmittedNumber = ref<string>();
 const lastEmittedCountry = ref<string>();
 const lastEmittedValidity = ref<boolean>();
