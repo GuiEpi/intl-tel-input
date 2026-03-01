@@ -42,6 +42,8 @@ export const PHONE_ERROR_MESSAGES: string[] = [
     <input
       type="tel"
       #inputRef
+      [placeholder]="placeholder"
+      [readonly]="readonly"
       (input)="handleInput()"
       (blur)="handleBlur($event)"
       (focus)="handleFocus($event)"
@@ -78,7 +80,9 @@ class IntlTelInput
 
   @Input() initialValue: string = "";
   @Input() usePreciseValidation: boolean = false;
-  @Input() inputProps: object = {};
+  @Input() placeholder?: string;
+  @Input() readonly?: boolean;
+  @Input() inputAttributes?: Record<string, string> = {};
   @Input() disabled?: boolean;
 
   // Plugin initialisation options (one @Input per option)
@@ -140,7 +144,10 @@ class IntlTelInput
 
   ngOnInit() {
     if (this.inputRef.nativeElement) {
-      this.iti = intlTelInput(this.inputRef.nativeElement, this.buildInitOptions());
+      this.iti = intlTelInput(
+        this.inputRef.nativeElement,
+        this.buildInitOptions(),
+      );
     }
 
     this.inputRef.nativeElement.addEventListener(
@@ -148,7 +155,7 @@ class IntlTelInput
       this.countryChangeHandler,
     );
 
-    this.applyInputProps();
+    this.applyInputAttributes();
   }
 
   private buildInitOptions(): SomeOptions {
@@ -298,11 +305,12 @@ class IntlTelInput
     );
   }
 
-  private applyInputProps(): void {
-    const props = this.inputProps;
-    Object.entries(props).forEach(([key, value]) => {
-      this.inputRef.nativeElement.setAttribute(key, value);
-    });
+  private applyInputAttributes(): void {
+    if (this.inputAttributes) {
+      Object.entries(this.inputAttributes).forEach(([key, value]) => {
+        this.inputRef.nativeElement.setAttribute(key, value);
+      });
+    }
   }
 
   // ============ ControlValueAccessor Implementation ============
