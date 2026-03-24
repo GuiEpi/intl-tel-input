@@ -422,7 +422,7 @@ module.exports = function (grunt) {
     title: "Angular component",
     metaDesc: "How to use intl-tel-input with Angular.",
     js: {
-      src: "src/examples/js/angular_component.ts.ejs",
+      src: "src/examples/js/angular_component.ts",
       dest: "tmp/examples/js/angular_component.ts",
       script: "angular_component_bundle.js",
     },

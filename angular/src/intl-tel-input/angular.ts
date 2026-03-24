@@ -4,7 +4,6 @@ import { Iti } from "../intl-tel-input";
 import {
   Component,
   Input,
-  OnInit,
   OnDestroy,
   ViewChild,
   ElementRef,
@@ -42,8 +41,6 @@ export const PHONE_ERROR_MESSAGES: string[] = [
     <input
       type="tel"
       #inputRef
-      [placeholder]="placeholder"
-      [readonly]="readonly"
       (input)="handleInput()"
       (blur)="handleBlur($event)"
       (focus)="handleFocus($event)"
@@ -68,7 +65,6 @@ export const PHONE_ERROR_MESSAGES: string[] = [
 })
 class IntlTelInput
   implements
-    OnInit,
     AfterViewInit,
     OnDestroy,
     OnChanges,
@@ -78,12 +74,10 @@ class IntlTelInput
   @ViewChild("inputRef", { static: true })
   inputRef!: ElementRef<HTMLInputElement>;
 
-  @Input() initialValue: string = "";
+  @Input() initialValue?: string;
   @Input() usePreciseValidation: boolean = false;
-  @Input() placeholder?: string;
-  @Input() readonly?: boolean;
-  @Input() inputAttributes?: Record<string, string> = {};
-  @Input() disabled?: boolean;
+  @Input() inputAttributes: Record<string, string> = {};
+  @Input() disabled: boolean = false;
 
   // Plugin initialisation options (one @Input per option)
   @Input() allowDropdown?: AllOptions["allowDropdown"];
@@ -120,6 +114,7 @@ class IntlTelInput
   @Output() countryChange = new EventEmitter<string>();
   @Output() validityChange = new EventEmitter<boolean>();
   @Output() errorCodeChange = new EventEmitter<number | null>();
+
   @Output() blur = new EventEmitter<FocusEvent>();
   @Output() focus = new EventEmitter<FocusEvent>();
   @Output() keydown = new EventEmitter<KeyboardEvent>();
@@ -128,6 +123,7 @@ class IntlTelInput
   @Output() click = new EventEmitter<MouseEvent>();
 
   private iti: Iti | null = null;
+  private appliedInputPropKeys = new Set<string>();
   private countryChangeHandler = () => this.handleInput();
 
   private lastEmittedNumber?: string;
@@ -141,22 +137,6 @@ class IntlTelInput
   private onTouched: () => void = () => {};
   // eslint-disable-next-line class-methods-use-this
   private onValidatorChange: () => void = () => {};
-
-  ngOnInit() {
-    if (this.inputRef.nativeElement) {
-      this.iti = intlTelInput(
-        this.inputRef.nativeElement,
-        this.buildInitOptions(),
-      );
-    }
-
-    this.inputRef.nativeElement.addEventListener(
-      "countrychange",
-      this.countryChangeHandler,
-    );
-
-    this.applyInputAttributes();
-  }
 
   private buildInitOptions(): SomeOptions {
     const options: Partial<AllOptions> = {
@@ -197,6 +177,20 @@ class IntlTelInput
   }
 
   ngAfterViewInit() {
+    if (this.inputRef.nativeElement) {
+      this.iti = intlTelInput(
+        this.inputRef.nativeElement,
+        this.buildInitOptions(),
+      );
+    }
+
+    this.inputRef.nativeElement.addEventListener(
+      "countrychange",
+      this.countryChangeHandler,
+    );
+
+    this.applyInputAttributes();
+
     if (this.initialValue) {
       this.iti?.setNumber(this.initialValue);
     }
@@ -209,6 +203,10 @@ class IntlTelInput
   ngOnChanges(changes: SimpleChanges) {
     if (changes["disabled"]) {
       this.iti?.setDisabled(this.disabled || false);
+    }
+
+    if (changes["inputAttributes"]) {
+      this.applyInputAttributes();
     }
   }
 
@@ -292,7 +290,7 @@ class IntlTelInput
    * This method must be called in `ngAfterViewInit` or later lifecycle hooks,
    * not in `ngOnInit` or the `constructor`, as the component needs to be fully initialized.
    */
-  getInput(): HTMLInputElement | null {
+  getInput(): HTMLInputElement {
     return this.inputRef.nativeElement;
   }
 
@@ -306,11 +304,20 @@ class IntlTelInput
   }
 
   private applyInputAttributes(): void {
-    if (this.inputAttributes) {
-      Object.entries(this.inputAttributes).forEach(([key, value]) => {
-        this.inputRef.nativeElement.setAttribute(key, value);
-      });
-    }
+    const currentKeys = new Set<string>();
+
+    Object.entries(this.inputAttributes).forEach(([key, value]) => {
+      currentKeys.add(key);
+      this.inputRef.nativeElement.setAttribute(key, value);
+    });
+
+    this.appliedInputPropKeys.forEach((key) => {
+      if (!currentKeys.has(key)) {
+        this.inputRef.nativeElement.removeAttribute(key);
+      }
+    });
+
+    this.appliedInputPropKeys = currentKeys;
   }
 
   // ============ ControlValueAccessor Implementation ============
@@ -353,7 +360,7 @@ class IntlTelInput
     return {
       invalidPhone: {
         errorCode,
-        errorMessage: PHONE_ERROR_MESSAGES[errorCode],
+        errorMessage: PHONE_ERROR_MESSAGES[errorCode] ?? "unknown",
       },
     };
   }
